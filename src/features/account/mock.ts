@@ -8,6 +8,7 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Nguyễn Văn A',
 		gender: 'MALE',
 		imageUrl: 'https://i.pravatar.cc/150?img=1',
+		role: 'ADMIN',
 	},
 	{
 		id: 2,
@@ -16,6 +17,7 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Trần Thị B',
 		gender: 'FEMALE',
 		imageUrl: 'https://i.pravatar.cc/150?img=2',
+		role: 'CLIENT',
 	},
 	{
 		id: 3,
@@ -24,6 +26,7 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Lê Minh C',
 		gender: 'MALE',
 		imageUrl: 'https://i.pravatar.cc/150?img=3',
+		role: 'EMPLOYEE',
 	},
 	{
 		id: 4,
@@ -32,6 +35,7 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Phạm Thị D',
 		gender: 'FEMALE',
 		imageUrl: 'https://i.pravatar.cc/150?img=4',
+		role: 'CLIENT',
 	},
 	{
 		id: 5,
@@ -40,6 +44,7 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Hoàng Văn E',
 		gender: 'MALE',
 		imageUrl: 'https://i.pravatar.cc/150?img=5',
+		role: 'EMPLOYEE',
 	},
 	{
 		id: 6,
@@ -48,6 +53,7 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Đoàn Thị F',
 		gender: 'FEMALE',
 		imageUrl: 'https://i.pravatar.cc/150?img=6',
+		role: 'CLIENT',
 	},
 	{
 		id: 7,
@@ -56,6 +62,7 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Vũ Quang H',
 		gender: 'OTHER',
 		imageUrl: 'https://i.pravatar.cc/150?img=7',
+		role: 'EMPLOYEE',
 	},
 	{
 		id: 8,
@@ -64,6 +71,7 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Bùi Hoàng I',
 		gender: 'MALE',
 		imageUrl: 'https://i.pravatar.cc/150?img=8',
+		role: 'CLIENT',
 	},
 	{
 		id: 9,
@@ -72,6 +80,7 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Đặng Thị J',
 		gender: 'FEMALE',
 		imageUrl: 'https://i.pravatar.cc/150?img=9',
+		role: 'EMPLOYEE',
 	},
 	{
 		id: 10,
@@ -80,5 +89,6 @@ export const MOCK_ACCOUNTS: AccountItem[] = [
 		fullName: 'Nguyễn Khang K',
 		gender: 'OTHER',
 		imageUrl: 'https://i.pravatar.cc/150?img=10',
+		role: 'CLIENT',
 	},
 ]

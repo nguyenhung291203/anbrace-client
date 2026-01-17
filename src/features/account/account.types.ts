@@ -1,5 +1,7 @@
 export type Gender = 'MALE' | 'FEMALE' | 'OTHER'
 
+export type Role = 'CLIENT' | 'ADMIN' | 'EMPLOYEE'
+
 export interface AccountItem {
 	id: number
 	email: string
@@ -7,4 +9,5 @@ export interface AccountItem {
 	fullName: string
 	gender: Gender
 	imageUrl: string
+	role: Role
 }
