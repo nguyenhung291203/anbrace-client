@@ -7,6 +7,7 @@ export const PATH_ITEM = {
 	ADMIN: {
 		ROOT: 'admin',
 		MANAGER_CATEGORY: 'manager-category',
+		DASHBOARD: 'dashboard',
 	},
 }
 
@@ -17,6 +18,7 @@ export const ROUTE_PATH = {
 		REGISTER: `/${PATH_ITEM.AUTH.ROOT}/${PATH_ITEM.AUTH.REGISTER}`,
 	},
 	ADMIN: {
+		DASHBOARD: `/${PATH_ITEM.ADMIN.ROOT}/${PATH_ITEM.ADMIN.DASHBOARD}`,
 		MANAGER_CATEGORY: `/${PATH_ITEM.ADMIN.ROOT}/${PATH_ITEM.ADMIN.MANAGER_CATEGORY}`,
 	},
 }

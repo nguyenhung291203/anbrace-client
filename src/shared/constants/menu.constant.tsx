@@ -11,6 +11,7 @@ import {
 	ReactNode,
 	IconLogin,
 	IconUserPlus,
+	IconCategory,
 } from '@tabler/icons-react'
 
 import { ROUTE_PATH } from '../path'
@@ -115,13 +116,18 @@ export const MENU_BY_ROLE: Record<Role, MenuItem[]> = {
 	ADMIN: [
 		{
 			label: 'Dashboard',
-			to: '/admin',
+			to: ROUTE_PATH.ADMIN.DASHBOARD,
 			icon: <IconHome />,
 		},
 		{
 			label: 'Quản lý người dùng',
 			to: '/admin/users',
 			icon: <IconUsers />,
+		},
+		{
+			label: 'Quản lý danh mục',
+			to: ROUTE_PATH.ADMIN.MANAGER_CATEGORY,
+			icon: <IconCategory />,
 		},
 		{
 			label: 'Cấu hình hệ thống',
