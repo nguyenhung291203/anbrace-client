@@ -3,6 +3,7 @@ import { useMediaQuery } from '@mantine/hooks'
 import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 
+import AccountInfo from './AccountInfo'
 import Header from './Header'
 import HeaderNavbar from './HeaderNavbar'
 import MenuNavbar from './MenuNavbar'
@@ -43,6 +44,7 @@ const MainLayout = () => {
 							<HeaderNavbar />
 							<MenuNavbar />
 						</Stack>
+						<AccountInfo />
 					</Stack>
 				</AppShell.Navbar>
 			)}

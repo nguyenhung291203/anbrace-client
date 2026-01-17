@@ -1,56 +1,47 @@
 import { Button, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { IconLock, IconUserSquareRounded } from '@tabler/icons-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { IconLock, IconMail, IconUser } from '@tabler/icons-react'
+import { Link } from 'react-router-dom'
 
 import { ROUTE_PATH } from '../../../shared/path'
-import { MOCK_ACCOUNTS } from '../../account/mock'
-import { useAuthStore } from '../auth.store'
 
-const LoginPage = () => {
-	const navigate = useNavigate()
-	const { login } = useAuthStore()
+const RegisterPage = () => {
 	const form = useForm({
 		initialValues: {
+			name: '',
 			email: '',
 			password: '',
+			confirmPassword: '',
 		},
 		validateInputOnBlur: true,
 		validateInputOnChange: true,
 	})
 
-	const handleSubmit = () => {
-		const { email } = form.values
-		const accounts = MOCK_ACCOUNTS
-		const account = accounts.find((item) => item.email === email)
-		if (!account) {
-			form.setErrors({
-				email: 'Email hoặc mật khẩu không đúng',
-				password: 'Email hoặc mật khẩu không đúng',
-			})
-			return
-		}
-
-		login(account)
-		navigate(ROUTE_PATH.HOME)
-	}
-
 	return (
 		<Stack>
 			<Stack gap="xs">
-				<Title order={3}>Đăng nhập</Title>
+				<Title order={3}>Đăng ký</Title>
 				<Text fw={400} fz="md" c="dimmed">
-					Truy cập nền tảng quản lý và theo dõi dữ liệu của bạn một cách an toàn và nhanh chóng
+					Tạo tài khoản mới để bắt đầu sử dụng nền tảng quản lý của bạn
 				</Text>
 			</Stack>
 
-			<form onSubmit={form.onSubmit(handleSubmit)}>
+			<form>
 				<Stack>
 					<TextInput
 						autoFocus
 						size="lg"
 						radius="md"
-						leftSection={<IconUserSquareRounded stroke={1.5} />}
+						leftSection={<IconUser stroke={1.5} />}
+						placeholder="Họ và tên"
+						required
+						{...form.getInputProps('name')}
+					/>
+
+					<TextInput
+						size="lg"
+						radius="md"
+						leftSection={<IconMail stroke={1.5} />}
 						placeholder="Email"
 						required
 						{...form.getInputProps('email')}
@@ -65,20 +56,29 @@ const LoginPage = () => {
 						{...form.getInputProps('password')}
 					/>
 
+					<PasswordInput
+						size="lg"
+						radius="md"
+						leftSection={<IconLock stroke={1.5} />}
+						placeholder="Xác nhận mật khẩu"
+						required
+						{...form.getInputProps('confirmPassword')}
+					/>
+
 					<Button mt="md" h={54} radius="md" type="submit" fullWidth>
-						Đăng nhập
+						Đăng ký
 					</Button>
 
 					<Text fz="sm" c="dimmed" ta="center">
-						Chưa có tài khoản?{' '}
+						Đã có tài khoản?{' '}
 						<Text
 							component={Link}
-							to={ROUTE_PATH.AUTH.REGISTER}
+							to={ROUTE_PATH.AUTH.LOGIN}
 							fw={500}
 							c="blue"
 							style={{ textDecoration: 'none' }}
 						>
-							Đăng ký
+							Đăng nhập
 						</Text>
 					</Text>
 				</Stack>
@@ -87,4 +87,4 @@ const LoginPage = () => {
 	)
 }
 
-export default LoginPage
+export default RegisterPage

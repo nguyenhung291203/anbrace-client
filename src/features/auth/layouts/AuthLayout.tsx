@@ -18,7 +18,7 @@ const AuthLayout: FC = () => {
 				<Grid h="100%" m={0} p={0} gutter={0} grow justify="space-between">
 					<Grid.Col span={{ base: 12, md: 10, lg: 5 }}>
 						<Card padding="xl" radius="md" h="100vh">
-							<Space h={100} />
+							<Space h={60} />
 							<Outlet />
 						</Card>
 					</Grid.Col>

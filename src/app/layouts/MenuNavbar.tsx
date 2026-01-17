@@ -6,8 +6,6 @@ import {
 	IconInfoCircle,
 	IconPalette,
 	IconPhone,
-	IconShoppingCart,
-	IconUser,
 } from '@tabler/icons-react'
 import { useMemo, type FC, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -60,16 +58,6 @@ const MenuNavbar: FC = () => {
 				label: 'Liên hệ',
 				to: '/contact',
 				icon: <IconPhone size={theme.fontSizes.xl} />,
-			},
-			{
-				label: 'Giỏ hàng',
-				to: '/cart',
-				icon: <IconShoppingCart size={theme.fontSizes.xl} />,
-			},
-			{
-				label: 'Tài khoản',
-				to: '/account',
-				icon: <IconUser size={theme.fontSizes.xl} />,
 			},
 		],
 		[theme.fontSizes],

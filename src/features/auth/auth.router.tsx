@@ -2,6 +2,7 @@ import { type RouteObject } from 'react-router-dom'
 
 import AuthLayout from './layouts/AuthLayout'
 import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 import { PATH_ITEM } from '../../shared/path'
 
 export const authRouter: RouteObject = {
@@ -11,6 +12,11 @@ export const authRouter: RouteObject = {
 		{
 			path: PATH_ITEM.AUTH.LOGIN,
 			element: <LoginPage />,
+		},
+
+		{
+			path: PATH_ITEM.AUTH.REGISTER,
+			element: <RegisterPage />,
 		},
 	],
 }
