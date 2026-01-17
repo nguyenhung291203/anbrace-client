@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 import { Role } from '@/features/account/account.types'
 import { useAuthStore } from '@/features/auth/auth.store'
-import { ROUTE_PATH } from '@/shared/path'
+import { ROUTE_PATH } from '@/shared/constants/path.constant'
 
 interface ProtectedRouteProps {
 	allowedRoles?: Role[]

@@ -5,7 +5,7 @@ import { useAuthStore } from '../auth.store'
 
 import type { FC } from 'react'
 
-import { ROUTE_PATH } from '@/shared/path'
+import { ROUTE_PATH } from '@/shared/constants/path.constant'
 
 const AuthLayout: FC = () => {
 	const theme = useMantineTheme()

@@ -12,9 +12,10 @@ import {
 	IconLogin,
 	IconUserPlus,
 	IconCategory,
+	IconPackage,
 } from '@tabler/icons-react'
 
-import { ROUTE_PATH } from '../path'
+import { ROUTE_PATH } from './path.constant'
 
 import { Role } from '@/features/account/account.types'
 
@@ -70,7 +71,7 @@ export const MENU_BY_ROLE: Record<Role, MenuItem[]> = {
 		},
 		{
 			label: 'Vòng tay',
-			to: '/bracelets',
+			to: ROUTE_PATH.PRODUCT.LIST_PRODUCT,
 			icon: <IconDiamond />,
 		},
 		{
@@ -128,6 +129,11 @@ export const MENU_BY_ROLE: Record<Role, MenuItem[]> = {
 			label: 'Quản lý danh mục',
 			to: ROUTE_PATH.ADMIN.MANAGER_CATEGORY,
 			icon: <IconCategory />,
+		},
+		{
+			label: 'Quản lý sản phẩm',
+			to: ROUTE_PATH.ADMIN.MANAGER_PRODUCT,
+			icon: <IconPackage />,
 		},
 		{
 			label: 'Cấu hình hệ thống',

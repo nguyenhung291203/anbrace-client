@@ -3,7 +3,7 @@ import { type RouteObject } from 'react-router-dom'
 import DashboardPage from './pages/DashboardPags'
 
 import ProtectedRoute from '@/app/routers/ProtectedRoute'
-import { ROUTE_PATH } from '@/shared/path'
+import { ROUTE_PATH } from '@/shared/constants/path.constant'
 
 const dashboardRouter: RouteObject = {
 	element: <ProtectedRoute allowedRoles={['ADMIN', 'EMPLOYEE']} />,

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { useAuthStore } from '../auth.store'
 
 import { MOCK_ACCOUNTS } from '@/features/account/mock'
-import { ROUTE_PATH } from '@/shared/path'
+import { ROUTE_PATH } from '@/shared/constants/path.constant'
 
 const LoginPage = () => {
 	const { login } = useAuthStore()

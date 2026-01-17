@@ -4,7 +4,7 @@ import AuthLayout from './layouts/AuthLayout'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 
-import { PATH_ITEM } from '@/shared/path'
+import { PATH_ITEM } from '@/shared/constants/path.constant'
 
 export const authRouter: RouteObject = {
 	path: PATH_ITEM.AUTH.ROOT,

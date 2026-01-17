@@ -7,33 +7,17 @@ import {
 	TextInput,
 	useMantineTheme,
 } from '@mantine/core'
-import {
-	IconBell,
-	IconLayoutSidebarLeftCollapse,
-	IconLayoutSidebarRightCollapse,
-	IconSearch,
-} from '@tabler/icons-react'
+import { IconBell, IconSearch } from '@tabler/icons-react'
 
-import { useLayoutStore } from '@/shared/stores/main-layout.store'
+import BreadcrumbHeader from './BreadcrumbHeader'
 
 const Header = () => {
 	const theme = useMantineTheme()
-	const { opened, toggleNavbar } = useLayoutStore()
 
 	return (
 		<Group px="md" justify="space-between" w="100%" h={80}>
-			<ActionIcon
-				variant="transparent"
-				color="gray"
-				onClick={toggleNavbar}
-				aria-label="Toggle sidebar"
-			>
-				{opened ? (
-					<IconLayoutSidebarLeftCollapse size={30} stroke={1.5} />
-				) : (
-					<IconLayoutSidebarRightCollapse size={30} stroke={1.5} />
-				)}
-			</ActionIcon>
+			<BreadcrumbHeader />
+
 			<Group gap="sm">
 				<TextInput
 					leftSection={<IconSearch stroke={1.2} size={theme.fontSizes.lg} />}
