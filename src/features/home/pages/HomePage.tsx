@@ -1,10 +1,10 @@
 import { SimpleGrid, Stack, Title } from '@mantine/core'
 
-import ContentPage from '../../../shared/components/ContentPage'
-import CategoryCard from '../../category/components/CategoryCard'
-import { CATEGORY_MOCK } from '../../category/mock'
-
 import type { FC } from 'react'
+
+import CategoryCard from '@/features/category/components/CategoryCard'
+import { CATEGORY_MOCK } from '@/features/category/mock'
+import ContentPage from '@/shared/components/ContentPage'
 
 const HomePage: FC = () => {
 	return (

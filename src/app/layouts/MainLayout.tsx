@@ -7,7 +7,8 @@ import AccountInfo from './AccountInfo'
 import Header from './Header'
 import HeaderNavbar from './HeaderNavbar'
 import MenuNavbar from './MenuNavbar'
-import { useLayoutStore } from '../../shared/stores/main-layout.store'
+
+import { useLayoutStore } from '@/shared/stores/main-layout.store'
 
 const MainLayout = () => {
 	const { opened, navbarWidth, headerHeight, openNavbar, closeNavbar } = useLayoutStore()

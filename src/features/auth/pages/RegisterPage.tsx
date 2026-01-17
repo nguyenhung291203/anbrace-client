@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form'
 import { IconLock, IconMail, IconUser } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { ROUTE_PATH } from '../../../shared/path'
+import { ROUTE_PATH } from '@/shared/path'
 
 const RegisterPage = () => {
 	const form = useForm({

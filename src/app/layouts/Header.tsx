@@ -14,7 +14,7 @@ import {
 	IconSearch,
 } from '@tabler/icons-react'
 
-import { useLayoutStore } from '../../shared/stores/main-layout.store'
+import { useLayoutStore } from '@/shared/stores/main-layout.store'
 
 const Header = () => {
 	const theme = useMantineTheme()
