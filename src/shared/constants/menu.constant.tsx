@@ -33,7 +33,7 @@ export const PUBLIC_MENU: MenuItem[] = [
 	},
 	{
 		label: 'Vòng tay',
-		to: '/bracelets',
+		to: ROUTE_PATH.PRODUCT.LIST_PRODUCT,
 		icon: <IconDiamond />,
 	},
 	{

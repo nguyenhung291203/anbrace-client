@@ -19,7 +19,7 @@ import {
 	IconShoppingCart,
 	IconStar,
 } from '@tabler/icons-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { MOCK_PRODUCTS } from '../mock'
@@ -32,7 +32,7 @@ import { ROUTE_PATH } from '@/shared/constants/path.constant'
 const ProductDetailPage = () => {
 	const { id } = useParams<{ id: string }>()
 	const navigate = useNavigate()
-	const product = MOCK_PRODUCTS.find((p) => p.id === Number(id))
+	const product = useMemo(() => MOCK_PRODUCTS.find((p) => p.id.toString() === id), [id])
 	if (!product) {
 		return <Text>Không tìm thấy sản phẩm</Text>
 	}

@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router-dom'
 
-import { ManagerProductPage, ProductDetailPage } from './pages'
+import { ListProductPage, ManagerProductPage, ProductDetailPage } from './pages'
 import CreateProductPage from './pages/CreateProductPage'
 
 import ProtectedRoute from '@/app/routers/ProtectedRoute'
@@ -26,6 +26,7 @@ const productRouter: RouteObject = {
 			children: [
 				{
 					path: PATH_ITEM.PRODUCT.LIST_PRODUCT,
+					element: <ListProductPage />,
 				},
 				{
 					path: PATH_ITEM.PRODUCT.DETAIL,

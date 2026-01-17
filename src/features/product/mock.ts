@@ -13,8 +13,13 @@ export const MOCK_PRODUCTS: ProductItem[] = [
 		price: 350000,
 		rating: 4.8,
 		stock: 20,
-		thumbnail: '/images/products/product-1.jpg',
-		images: ['/images/products/product-1-1.jpg', '/images/products/product-1-2.jpg'],
+		thumbnail:
+			'https://tse1.explicit.bing.net/th/id/OIP.-7pqmcLqoemujrL8w8ROrAHaJ3?rs=1&pid=ImgDetMain&o=7&rm=3',
+		images: [
+			'https://kimtuthap.vn/wp-content/uploads/2019/12/vong-thach-anh-trang-duc-560x560.jpg',
+			'https://trangsuc88.vn/wp-content/uploads/2019/11/12sad-3.jpg',
+			'https://trangsucsen.com/wp-content/uploads/2023/11/vong-thach-anh-trang-01-min.jpg',
+		],
 	},
 	{
 		id: 2,
@@ -28,8 +33,11 @@ export const MOCK_PRODUCTS: ProductItem[] = [
 		price: 420000,
 		rating: 4.6,
 		stock: 15,
-		thumbnail: '/images/products/product-2.jpg',
-		images: ['/images/products/product-2-1.jpg', '/images/products/product-2-2.jpg'],
+		thumbnail: 'https://kaia.vn/wp-content/uploads/2018/12/untitled-46.jpg',
+		images: [
+			'https://product.hstatic.net/200000920459/product/vong_tay_mat_ho_nau_2a_8_mix_lu_thong_nephrite_ma_vang_d5891a16ba634335a0584f69b4789776.jpg',
+			'https://ngocnhien.com/wp-content/uploads/vong-tay-da-mat-ho-nau-vang-8-ly-1.jpg',
+		],
 	},
 	{
 		id: 3,
@@ -43,8 +51,12 @@ export const MOCK_PRODUCTS: ProductItem[] = [
 		price: 390000,
 		rating: 4.7,
 		stock: 18,
-		thumbnail: '/images/products/product-3.jpg',
-		images: ['/images/products/product-3-1.jpg', '/images/products/product-3-2.jpg'],
+		thumbnail:
+			'https://tse1.mm.bing.net/th/id/OIP.z78S1DlFGZJ5bsiuaPikDAHaJQ?rs=1&pid=ImgDetMain&o=7&rm=3',
+		images: [
+			'https://www.tuviphongthuy.vn/wp-content/uploads/2023/06/hac-dieu-thach.jpg',
+			'https://tse1.explicit.bing.net/th/id/OIP.uzm4VkrmZN4y6nzU5foN_gHaGf?w=790&h=692&rs=1&pid=ImgDetMain&o=7&rm=3',
+		],
 	},
 	{
 		id: 4,
