@@ -1,10 +1,23 @@
 import { Box, Card, Grid, Paper, Space, useMantineTheme } from '@mantine/core'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
+
+import { useAuthStore } from '../auth.store'
 
 import type { FC } from 'react'
 
+import { ROUTE_PATH } from '@/shared/path'
+
 const AuthLayout: FC = () => {
 	const theme = useMantineTheme()
+	const { isAuthenticated, user } = useAuthStore()
+	if (isAuthenticated && user) {
+		return (
+			<Navigate
+				to={user.role === 'CLIENT' ? ROUTE_PATH.HOME : ROUTE_PATH.ADMIN.DASHBOARD}
+				replace
+			/>
+		)
+	}
 	return (
 		<Box
 			style={{

@@ -1,7 +1,7 @@
 import { Button, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { IconLock, IconUserSquareRounded } from '@tabler/icons-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { useAuthStore } from '../auth.store'
 
@@ -9,12 +9,11 @@ import { MOCK_ACCOUNTS } from '@/features/account/mock'
 import { ROUTE_PATH } from '@/shared/path'
 
 const LoginPage = () => {
-	const navigate = useNavigate()
 	const { login } = useAuthStore()
 	const form = useForm({
 		initialValues: {
-			email: '',
-			password: '',
+			email: 'nguyenvana@gmail.com',
+			password: 'nguyenvana@gmail.com',
 		},
 		validateInputOnBlur: true,
 		validateInputOnChange: true,
@@ -33,7 +32,6 @@ const LoginPage = () => {
 		}
 
 		login(account)
-		navigate(ROUTE_PATH.HOME)
 	}
 
 	return (

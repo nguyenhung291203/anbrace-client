@@ -4,6 +4,11 @@ export const PATH_ITEM = {
 		LOGIN: 'login',
 		REGISTER: 'register',
 	},
+	ADMIN: {
+		ROOT: 'admin',
+		MANAGER_CATEGORY: 'manager-category',
+		DASHBOARD: 'dashboard',
+	},
 }
 
 export const ROUTE_PATH = {
@@ -11,5 +16,9 @@ export const ROUTE_PATH = {
 	AUTH: {
 		LOGIN: `/${PATH_ITEM.AUTH.ROOT}/${PATH_ITEM.AUTH.LOGIN}`,
 		REGISTER: `/${PATH_ITEM.AUTH.ROOT}/${PATH_ITEM.AUTH.REGISTER}`,
+	},
+	ADMIN: {
+		DASHBOARD: `/${PATH_ITEM.ADMIN.ROOT}/${PATH_ITEM.ADMIN.DASHBOARD}`,
+		MANAGER_CATEGORY: `/${PATH_ITEM.ADMIN.ROOT}/${PATH_ITEM.ADMIN.MANAGER_CATEGORY}`,
 	},
 }

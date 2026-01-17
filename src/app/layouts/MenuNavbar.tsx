@@ -1,16 +1,9 @@
 import { ActionIcon, Center, NavLink, rem, Stack, useMantineTheme } from '@mantine/core'
-import {
-	IconAdjustments,
-	IconDiamond,
-	IconHome,
-	IconInfoCircle,
-	IconPalette,
-	IconPhone,
-} from '@tabler/icons-react'
 import { useMemo, type FC, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { ROUTE_PATH } from '@/shared/path'
+import { useAuthStore } from '@/features/auth/auth.store'
+import { MENU_BY_ROLE, PUBLIC_MENU } from '@/shared/constants/menu.constant'
 import { useLayoutStore } from '@/shared/stores/main-layout.store'
 import { isCurrentPathActive } from '@/shared/utils/location.util'
 
@@ -23,45 +16,20 @@ export interface MenuItem {
 
 const MenuNavbar: FC = () => {
 	const theme = useMantineTheme()
+
 	const navigate = useNavigate()
+	const { user } = useAuthStore()
 
 	const { opened, toggleNavbar } = useLayoutStore()
 
-	const menuList: MenuItem[] = useMemo(
-		() => [
-			{
-				label: 'Trang chủ',
-				to: ROUTE_PATH.HOME,
-				icon: <IconHome size={theme.fontSizes.xl} />,
-			},
-			{
-				label: 'Vòng tay',
-				to: '/bracelets',
-				icon: <IconDiamond size={theme.fontSizes.xl} />,
-			},
-			{
-				label: 'Bộ sưu tập',
-				to: '/collections',
-				icon: <IconPalette size={theme.fontSizes.xl} />,
-			},
-			{
-				label: 'Cá nhân hoá',
-				to: '/customize',
-				icon: <IconAdjustments size={theme.fontSizes.xl} />,
-			},
-			{
-				label: 'Về AnBrace',
-				to: '/about',
-				icon: <IconInfoCircle size={theme.fontSizes.xl} />,
-			},
-			{
-				label: 'Liên hệ',
-				to: '/contact',
-				icon: <IconPhone size={theme.fontSizes.xl} />,
-			},
-		],
-		[theme.fontSizes],
-	)
+	const menuList = useMemo(() => {
+		const menu = user ? MENU_BY_ROLE[user.role] : PUBLIC_MENU
+
+		return menu.map((item) => ({
+			...item,
+			icon: item.icon ? <span style={{ fontSize: theme.fontSizes.xl }}>{item.icon}</span> : null,
+		}))
+	}, [user, theme.fontSizes])
 
 	const renderMenu = (menu: MenuItem[]) =>
 		menu.map((item) => {
