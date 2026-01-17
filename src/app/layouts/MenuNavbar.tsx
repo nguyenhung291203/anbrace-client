@@ -10,9 +10,9 @@ import {
 import { useMemo, type FC, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { ROUTE_PATH } from '../../shared/path'
-import { useLayoutStore } from '../../shared/stores/main-layout.store'
-import { isCurrentPathActive } from '../../shared/utils/location.util'
+import { ROUTE_PATH } from '@/shared/path'
+import { useLayoutStore } from '@/shared/stores/main-layout.store'
+import { isCurrentPathActive } from '@/shared/utils/location.util'
 
 export interface MenuItem {
 	label: string

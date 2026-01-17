@@ -1,8 +1,8 @@
 import { Avatar, Group, Menu, Stack, Text, UnstyledButton } from '@mantine/core'
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react'
 
-import { useAuthStore } from '../../features/auth/auth.store'
-import { useLayoutStore } from '../../shared/stores/main-layout.store'
+import { useAuthStore } from '@/features/auth/auth.store'
+import { useLayoutStore } from '@/shared/stores/main-layout.store'
 
 const AccountInfo = () => {
 	const { user } = useAuthStore()

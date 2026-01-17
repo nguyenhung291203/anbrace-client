@@ -1,8 +1,8 @@
 import { Group } from '@mantine/core'
 import { memo } from 'react'
 
-import { useLayoutStore } from '../../shared/stores/main-layout.store'
-import Logo from '../../shared/components/Logo'
+import Logo from '@/shared/components/Logo'
+import { useLayoutStore } from '@/shared/stores/main-layout.store'
 
 const HeaderNavbar = () => {
 	const { opened, headerHeight } = useLayoutStore()

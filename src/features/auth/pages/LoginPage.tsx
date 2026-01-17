@@ -3,9 +3,10 @@ import { useForm } from '@mantine/form'
 import { IconLock, IconUserSquareRounded } from '@tabler/icons-react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { ROUTE_PATH } from '../../../shared/path'
-import { MOCK_ACCOUNTS } from '../../account/mock'
 import { useAuthStore } from '../auth.store'
+
+import { MOCK_ACCOUNTS } from '@/features/account/mock'
+import { ROUTE_PATH } from '@/shared/path'
 
 const LoginPage = () => {
 	const navigate = useNavigate()
