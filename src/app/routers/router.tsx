@@ -6,6 +6,7 @@ import { authRouter } from '@/features/auth/auth.router'
 import categoryRouter from '@/features/category/category.router'
 import dashboardRouter from '@/features/dashboard/dashboard.router'
 import { homeRouter } from '@/features/home/home.router'
+import productRouter from '@/features/product/product.router'
 
 const routes: RouteObject[] = [
 	{
@@ -14,7 +15,7 @@ const routes: RouteObject[] = [
 		children: [
 			...homeRouter,
 			{
-				children: [dashboardRouter, categoryRouter],
+				children: [dashboardRouter, categoryRouter, productRouter],
 			},
 		],
 	},

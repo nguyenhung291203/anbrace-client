@@ -3,7 +3,7 @@ import { RouteObject } from 'react-router-dom'
 import ManagerCategoryPage from './pages/ManagerCategoryPage'
 
 import ProtectedRoute from '@/app/routers/ProtectedRoute'
-import { ROUTE_PATH } from '@/shared/path'
+import { ROUTE_PATH } from '@/shared/constants/path.constant'
 
 const categoryRouter: RouteObject = {
 	element: <ProtectedRoute allowedRoles={['ADMIN', 'EMPLOYEE']} />,

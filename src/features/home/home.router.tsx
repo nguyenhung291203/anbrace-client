@@ -1,7 +1,7 @@
 import { type RouteObject } from 'react-router-dom'
 
 import HomePage from './pages/HomePage'
-import { ROUTE_PATH } from '../../shared/path'
+import { ROUTE_PATH } from '../../shared/constants/path.constant'
 
 export const homeRouter: RouteObject[] = [
 	{
