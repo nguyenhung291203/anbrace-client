@@ -15,10 +15,14 @@ import {
 import {
 	IconBolt,
 	IconFileText,
+	IconHeadset,
 	IconInfoCircle,
+	IconRefresh,
 	IconShoppingCart,
 	IconStar,
+	IconTruckDelivery,
 } from '@tabler/icons-react'
+import clsx from 'clsx'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -39,6 +43,7 @@ const ProductDetailPage = () => {
 	const { isAuthenticated } = useAuthStore()
 	const [quantity, setQuantity] = useState(1)
 	const [activeImage, setActiveImage] = useState(product.thumbnail)
+	const [selectedSize, setSelectedSize] = useState(product.sizes[0])
 
 	return (
 		<Stack>
@@ -79,6 +84,40 @@ const ProductDetailPage = () => {
 								<Title order={3}>{product.name}</Title>
 								<Text c="gray">{product.description}</Text>
 								<Rating color="yellow.4" value={product.rating} readOnly fractions={10} size="sm" />
+								<Stack gap={4}>
+									<Text fw={500} size="sm">
+										Kích thước
+									</Text>
+
+									<Group gap="xs">
+										{product.sizes.map((item) => {
+											const isSelected = selectedSize.size === item.size
+											const isOutOfStock = item.stock === 0
+
+											return (
+												<div
+													key={item.size}
+													className={clsx(
+														'w-12 h-12 flex items-center justify-center rounded-md border transition',
+														{
+															'cursor-not-allowed opacity-50': isOutOfStock,
+															'cursor-pointer hover:bg-blue-50': !isOutOfStock,
+															'border-blue-500 bg-blue-100': isSelected,
+															'border-gray-300': !isSelected,
+														},
+													)}
+													onClick={() => {
+														if (!isOutOfStock) {
+															setSelectedSize(item)
+														}
+													}}
+												>
+													<span className="font-medium text-sm">{item.size}</span>
+												</div>
+											)
+										})}
+									</Group>
+								</Stack>
 
 								<Group gap="lg">
 									<Stack gap={0}>
@@ -86,7 +125,7 @@ const ProductDetailPage = () => {
 											Giá
 										</Text>
 										<Text fw={700} size="xl">
-											{product.price.toLocaleString()} ₫
+											{selectedSize.price.toLocaleString()} ₫
 										</Text>
 									</Stack>
 
@@ -95,11 +134,35 @@ const ProductDetailPage = () => {
 										value={quantity}
 										onChange={(val) => setQuantity(Number(val) || 1)}
 										min={1}
-										max={product.stock}
+										max={product.sizes[0].stock}
 										w={120}
 									/>
 								</Group>
 							</Stack>
+
+							<Group gap="sm" wrap="nowrap">
+								<div className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-2">
+									<div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100">
+										<IconTruckDelivery size={16} className="text-blue-600" />
+									</div>
+									<span className="text-sm font-medium text-blue-700">Miễn phí giao hàng</span>
+								</div>
+
+								<div className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-2">
+									<div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100">
+										<IconHeadset size={16} className="text-blue-600" />
+									</div>
+									<span className="text-sm font-medium text-blue-700">Phục vụ 24/7</span>
+								</div>
+
+								<div className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-2">
+									<div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100">
+										<IconRefresh size={16} className="text-blue-600" />
+									</div>
+									<span className="text-sm font-medium text-blue-700">Thu đổi 48h</span>
+								</div>
+							</Group>
+
 							<Group gap="sm" mt="md">
 								<Button
 									size="lg"
@@ -174,17 +237,24 @@ const ProductDetailPage = () => {
 
 							<Group justify="space-between">
 								<Text fw={500}>Giá</Text>
-								<Text>{product.price.toLocaleString()} ₫</Text>
+								<Text>{selectedSize.price.toLocaleString()} ₫</Text>
 							</Group>
 
 							<Group justify="space-between">
 								<Text fw={500}>Tồn kho</Text>
-								<Text>{product.stock}</Text>
+								<Text>{selectedSize.stock}</Text>
 							</Group>
 
 							<Group justify="space-between">
 								<Text fw={500}>Đánh giá</Text>
-								<Rating value={product.rating} readOnly fractions={10} size="sm" />
+								<Rating
+									value={product.rating}
+									readOnly
+									fractions={10}
+									size="sm"
+									color="yellow.4
+								"
+								/>
 							</Group>
 						</Stack>
 					</Tabs.Panel>

@@ -15,7 +15,7 @@ const ListProductPage: FC = () => {
 				<Stack>
 					<Grid gutter="md">
 						{MOCK_PRODUCTS.splice(0, 8).map((product) => (
-							<Grid.Col key={product.id} span={{ base: 12, xs: 6, sm: 6, md: 4, lg: 3 }}>
+							<Grid.Col key={product.id} span={{ base: 12, xs: 6, sm: 6, md: 4, lg: 3, xl: 2 }}>
 								<ProductCard product={product} />
 							</Grid.Col>
 						))}

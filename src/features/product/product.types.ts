@@ -1,13 +1,17 @@
 import { CategoryItem } from '../category/category.types'
+export interface ProductSizePrice {
+	size: number
+	price: number
+	stock: number
+}
 
 export interface ProductItem {
 	id: number
 	name: string
 	description: string
 	category: Omit<CategoryItem, 'quantity'>
-	price: number
+	sizes: ProductSizePrice[]
 	rating: number
-	stock: number
 	images: string[]
 	thumbnail: string
 }

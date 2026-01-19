@@ -1,11 +1,12 @@
 import { ActionIcon, Badge, Card, Group, Image, Rating, Stack, Text } from '@mantine/core'
 import { IconHeart, IconShoppingCart, IconHeartFilled } from '@tabler/icons-react'
-import { FC, useState } from 'react'
+import { FC, memo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { ProductItem } from '../product.types'
 
-import { PATH_ITEM } from '@/shared/constants/path.constant'
+import { useAuthStore } from '@/features/auth/auth.store'
+import { PATH_ITEM, ROUTE_PATH } from '@/shared/constants/path.constant'
 
 interface ProductCardProps {
 	product: ProductItem
@@ -13,6 +14,7 @@ interface ProductCardProps {
 
 const ProductCard: FC<ProductCardProps> = ({ product }) => {
 	const navigate = useNavigate()
+	const { isAuthenticated } = useAuthStore()
 	const [isHovered, setIsHovered] = useState(false)
 	const [isFavorite, setIsFavorite] = useState(false)
 
@@ -56,6 +58,10 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
 					size="md"
 					onClick={(e) => {
 						e.stopPropagation()
+						if (!isAuthenticated) {
+							navigate(`${ROUTE_PATH.AUTH.LOGIN}`)
+							return
+						}
 						setIsFavorite(!isFavorite)
 					}}
 					style={{
@@ -66,20 +72,6 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
 				>
 					{isFavorite ? <IconHeartFilled size={14} /> : <IconHeart size={14} />}
 				</ActionIcon>
-
-				{product.stock < 10 && (
-					<Badge
-						variant="filled"
-						color="orange"
-						pos="absolute"
-						bottom={8}
-						left={8}
-						size="xs"
-						style={{ fontSize: '9px' }}
-					>
-						Còn {product.stock}
-					</Badge>
-				)}
 			</Card.Section>
 
 			<Stack gap={6} mt="sm">
@@ -126,7 +118,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
 							lineHeight: 1.2,
 						}}
 					>
-						{product.price.toLocaleString()}₫
+						{product.sizes[0].price.toLocaleString()}₫
 					</Text>
 
 					<ActionIcon
@@ -152,4 +144,4 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
 	)
 }
 
-export default ProductCard
+export default memo(ProductCard)
