@@ -1,5 +1,6 @@
 import {
 	Button,
+	Divider,
 	Grid,
 	Group,
 	Image,
@@ -26,12 +27,16 @@ import clsx from 'clsx'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import ProductCard from '../components/ProductCard'
 import { MOCK_PRODUCTS } from '../mock'
+import { PRODUCT_CARD_VARIANT } from '../product.types'
 
 import { useAuthStore } from '@/features/auth/auth.store'
+import { useGetListCategory } from '@/features/category/category.api'
 import ContentPage from '@/shared/components/ContentPage'
 import TitlePage from '@/shared/components/TitlePage'
 import { ROUTE_PATH } from '@/shared/constants/path.constant'
+import { API_CODE } from '@/shared/types'
 
 const ProductDetailPage = () => {
 	const { id } = useParams<{ id: string }>()
@@ -44,7 +49,12 @@ const ProductDetailPage = () => {
 	const [quantity, setQuantity] = useState(1)
 	const [activeImage, setActiveImage] = useState(product.thumbnail)
 	const [selectedSize, setSelectedSize] = useState(product.sizes[0])
-
+	const { data, isLoading } = useGetListCategory({
+		pageNo: 1,
+		pageSize: 12,
+	})
+	const success = data?.code === API_CODE.SUCCESS
+	const categories = data?.result.items ?? []
 	return (
 		<Stack>
 			<TitlePage title="Chi tiết sản phẩm" />
@@ -266,6 +276,24 @@ const ProductDetailPage = () => {
 					</Tabs.Panel>
 				</Tabs>
 				<Space h={10} />
+				<Divider />
+				<Stack gap="sm">
+					<Title order={3} fw={600} fz="lg">
+						Sản phẩm liên quan
+					</Title>
+					<Grid gutter="md">
+						{MOCK_PRODUCTS.filter((p) => p.id !== product.id)
+							.slice(0, 6)
+							.map((relatedProduct) => (
+								<Grid.Col
+									key={relatedProduct.id}
+									span={{ base: 12, xs: 6, sm: 6, md: 4, lg: 3, xl: 2 }}
+								>
+									<ProductCard product={relatedProduct} variant={PRODUCT_CARD_VARIANT.V2} />
+								</Grid.Col>
+							))}
+					</Grid>
+				</Stack>
 			</ContentPage>
 		</Stack>
 	)

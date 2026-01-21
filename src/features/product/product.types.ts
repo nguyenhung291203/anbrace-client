@@ -19,3 +19,8 @@ export interface ProductItem {
 export type ProductEdit = Omit<ProductItem, 'category' | 'rating' | 'id'> & {
 	categoryId: number | null
 }
+
+export enum PRODUCT_CARD_VARIANT {
+	V1 = 'v1',
+	V2 = 'v2',
+}

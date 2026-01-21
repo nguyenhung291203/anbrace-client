@@ -7,7 +7,7 @@ interface TitlePageProps {
 
 const TitlePage: FC<TitlePageProps> = ({ title }) => {
 	return (
-		<Title order={2} fw={600} fz="lg">
+		<Title order={2} fw={600} fz="xl">
 			{title}
 		</Title>
 	)

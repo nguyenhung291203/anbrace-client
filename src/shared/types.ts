@@ -45,3 +45,9 @@ export interface PaginationResponse<T> {
 	totalItems: number
 	totalPages: number
 }
+
+export interface ITab {
+	value: string
+	label: string
+	panel?: React.ReactNode
+}

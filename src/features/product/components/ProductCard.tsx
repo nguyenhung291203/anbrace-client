@@ -1,22 +1,69 @@
-import { ActionIcon, Badge, Card, Group, Image, Rating, Stack, Text } from '@mantine/core'
+import { ActionIcon, Badge, Button, Card, Group, Image, Rating, Stack, Text } from '@mantine/core'
 import { IconHeart, IconShoppingCart, IconHeartFilled } from '@tabler/icons-react'
 import { FC, memo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { ProductItem } from '../product.types'
+import { PRODUCT_CARD_VARIANT, ProductItem } from '../product.types'
 
 import { useAuthStore } from '@/features/auth/auth.store'
 import { PATH_ITEM, ROUTE_PATH } from '@/shared/constants/path.constant'
 
 interface ProductCardProps {
 	product: ProductItem
+	variant?: PRODUCT_CARD_VARIANT
 }
 
-const ProductCard: FC<ProductCardProps> = ({ product }) => {
+const ProductCard: FC<ProductCardProps> = ({ product, variant = PRODUCT_CARD_VARIANT.V1 }) => {
 	const navigate = useNavigate()
 	const { isAuthenticated } = useAuthStore()
 	const [isHovered, setIsHovered] = useState(false)
 	const [isFavorite, setIsFavorite] = useState(false)
+	const handleNavigateToDetail = () => {
+		navigate(`/${PATH_ITEM.PRODUCT.ROOT}/${product.id}`)
+	}
+
+	if (variant === PRODUCT_CARD_VARIANT.V2) {
+		return (
+			<Card
+				padding="sm"
+				radius="md"
+				shadow="md"
+				style={{ cursor: 'pointer' }}
+				onClick={handleNavigateToDetail}
+			>
+				<Stack gap="xs" align="center">
+					<Image src={product.thumbnail} h={100} fit="contain" bg="gray.0" radius="sm" />
+
+					<Text size="sm" fw={600} lineClamp={2} ta="center">
+						{product.name}
+					</Text>
+
+					<Text fw={700} c="primary" size="sm">
+						{product.sizes[0].price.toLocaleString()}₫
+					</Text>
+
+					<Button
+						size="sm"
+						fullWidth
+						variant="outline"
+						leftSection={<IconShoppingCart size={16} />}
+						onClick={(e) => {
+							e.stopPropagation()
+
+							if (!isAuthenticated) {
+								navigate(ROUTE_PATH.AUTH.LOGIN)
+								return
+							}
+
+							// TODO: add to cart logic
+						}}
+					>
+						Thêm vào giỏ hàng
+					</Button>
+				</Stack>
+			</Card>
+		)
+	}
 
 	return (
 		<Card
@@ -33,9 +80,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
 			}}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
-			onClick={() => {
-				navigate(`/${PATH_ITEM.PRODUCT.ROOT}/${product.id}`)
-			}}
+			onClick={handleNavigateToDetail}
 		>
 			<Card.Section pos="relative" style={{ overflow: 'hidden', backgroundColor: '#f8f9fa' }}>
 				<Image
