@@ -8,14 +8,25 @@ import Header from './Header'
 import HeaderNavbar from './HeaderNavbar'
 import MenuNavbar from './MenuNavbar'
 
+import { useGetMe } from '@/features/auth/auth.api'
+import { useAuthStore } from '@/features/auth/auth.store'
 import { useLayoutStore } from '@/shared/stores/main-layout.store'
+import { getAccessToken } from '@/shared/utils/token.util'
 
 const MainLayout = () => {
 	const { opened, navbarWidth, headerHeight, openNavbar, closeNavbar } = useLayoutStore()
+	const accessToken = getAccessToken()
+	const { setUser } = useAuthStore()
 
 	const isSmall = useMediaQuery('(max-width: 992px)')
 	const isMobile = useMediaQuery('(max-width: 767px)')
+	const { data } = useGetMe(!!accessToken)
 
+	useEffect(() => {
+		if (data?.result) {
+			setUser(data.result)
+		}
+	}, [data, setUser])
 	useEffect(() => {
 		if (isSmall) {
 			closeNavbar()

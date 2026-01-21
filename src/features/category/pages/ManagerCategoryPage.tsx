@@ -1,6 +1,6 @@
 import { Button, Group, Pagination, Stack, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useDebouncedValue } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
 import { FC, useState } from 'react'
 
@@ -24,7 +24,9 @@ const ManagerCategoryPage: FC = () => {
 	const [mode, setMode] = useState<Mode>(null)
 	const [confirmOpened, { open, close }] = useDisclosure(false)
 	const [pagination, setPagination] = useState<ListCategoryRequest>({ pageSize: 5, pageNo: 1 })
-	const { data, isLoading } = useGetListCategory(pagination)
+	const [debouncedPagination] = useDebouncedValue(pagination, 300)
+
+	const { data, isLoading } = useGetListCategory(debouncedPagination)
 	const success = data?.code === API_CODE.SUCCESS
 	const categories = data?.result?.items || []
 	const totalPages = data?.result?.totalPages || 0

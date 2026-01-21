@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Select, TextInput } from '@mantine/core'
+import { ActionIcon, Group, TextInput } from '@mantine/core'
 import { IconRefresh, IconSearch } from '@tabler/icons-react'
 import { FC } from 'react'
 
@@ -18,18 +18,6 @@ const CategoryFilter: FC<CategoryFilterProps> = ({ keyword, status, onChange, on
 				leftSection={<IconSearch size={16} />}
 				value={keyword}
 				onChange={(e) => onChange({ keyword: e.currentTarget.value, status })}
-			/>
-
-			<Select
-				placeholder="Trạng thái"
-				clearable
-				radius="sm"
-				value={status}
-				data={[
-					{ value: 'ACTIVE', label: 'Hoạt động' },
-					{ value: 'INACTIVE', label: 'Ngừng hoạt động' },
-				]}
-				onChange={(value) => onChange({ keyword, status: value ?? undefined })}
 			/>
 
 			<ActionIcon variant="filled" radius="sm" size="lg" onClick={onReset}>

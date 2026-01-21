@@ -9,13 +9,10 @@ import { ROUTE_PATH } from '@/shared/constants/path.constant'
 
 const AuthLayout: FC = () => {
 	const theme = useMantineTheme()
-	const { isAuthenticated, user } = useAuthStore()
-	if (isAuthenticated && user) {
+	const { isAuthenticated, role } = useAuthStore()
+	if (isAuthenticated) {
 		return (
-			<Navigate
-				to={user.role === 'CLIENT' ? ROUTE_PATH.HOME : ROUTE_PATH.ADMIN.DASHBOARD}
-				replace
-			/>
+			<Navigate to={role === 'CLIENT' ? ROUTE_PATH.HOME : ROUTE_PATH.ADMIN.DASHBOARD} replace />
 		)
 	}
 	return (

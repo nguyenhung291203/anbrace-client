@@ -13,13 +13,16 @@ const ProtectedRoute = ({
 	allowedRoles,
 	redirectTo = ROUTE_PATH.AUTH.LOGIN,
 }: ProtectedRouteProps) => {
-	const { user, isAuthenticated } = useAuthStore()
+	const { role, isAuthenticated, isLoading } = useAuthStore()
+	if (isLoading) {
+		return <p>Loading...</p>
+	}
 
-	if (!isAuthenticated || !user) {
+	if (!isAuthenticated) {
 		return <Navigate to={redirectTo} replace />
 	}
 
-	if (allowedRoles && !allowedRoles.includes(user.role)) {
+	if (role && allowedRoles && !allowedRoles.includes(role)) {
 		return <Navigate to="/403" replace />
 	}
 

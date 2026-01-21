@@ -14,12 +14,14 @@ export interface BaseQueryArgs {
 
 export enum API_CODE {
 	SUCCESS = 'SUCCESS',
+	INVALID = 'INVALID',
 }
 
 export interface ApiResponse<T> {
 	code: string
 	message: string
 	result: T
+	errors?: Record<string, string>
 }
 
 export class ApiError extends Error {

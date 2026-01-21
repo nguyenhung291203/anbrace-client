@@ -3,35 +3,40 @@ import { useForm } from '@mantine/form'
 import { IconLock, IconUserSquareRounded } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
+import { useLogin } from '../auth.api'
 import { useAuthStore } from '../auth.store'
 
-import { MOCK_ACCOUNTS } from '@/features/account/mock'
 import { ROUTE_PATH } from '@/shared/constants/path.constant'
+import { API_CODE } from '@/shared/types'
+import { setTokens } from '@/shared/utils/token.util'
 
 const LoginPage = () => {
-	const { login } = useAuthStore()
+	const { setIsAuthenticated } = useAuthStore()
+	const { mutateAsync, isPending } = useLogin()
 	const form = useForm({
 		initialValues: {
-			email: 'nguyenvana@gmail.com',
-			password: 'nguyenvana@gmail.com',
+			email: 'hung.nguyen@test.com',
+			password: '123456',
 		},
 		validateInputOnBlur: true,
 		validateInputOnChange: true,
 	})
 
-	const handleSubmit = () => {
-		const { email } = form.values
-		const accounts = MOCK_ACCOUNTS
-		const account = accounts.find((item) => item.email === email)
-		if (!account) {
-			form.setErrors({
-				email: 'Email hoặc mật khẩu không đúng',
-				password: 'Email hoặc mật khẩu không đúng',
-			})
+	const handleSubmit = async () => {
+		const { email, password } = form.values
+		const res = await mutateAsync({ email, password })
+		console.log('res', res)
+		const code = res?.code || null
+		if (code === API_CODE.INVALID) {
+			const errors = res?.errors || {}
+			form.setErrors(errors)
 			return
 		}
-
-		login(account)
+		if (code === API_CODE.SUCCESS) {
+			const { accessToken, refereshToken } = res.result
+			setTokens(accessToken, refereshToken)
+			setIsAuthenticated(true)
+		}
 	}
 
 	return (
@@ -64,7 +69,7 @@ const LoginPage = () => {
 						{...form.getInputProps('password')}
 					/>
 
-					<Button mt="md" h={54} radius="md" type="submit" fullWidth>
+					<Button mt="md" h={54} radius="md" type="submit" fullWidth loading={isPending}>
 						Đăng nhập
 					</Button>
 
