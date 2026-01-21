@@ -12,6 +12,10 @@ export interface BaseQueryArgs {
 	headers?: AxiosRequestConfig['headers']
 }
 
+export enum API_CODE {
+	SUCCESS = 'SUCCESS',
+}
+
 export interface ApiResponse<T> {
 	code: string
 	message: string
@@ -28,4 +32,16 @@ export class ApiError extends Error {
 		this.code = code
 		this.status = status
 	}
+}
+
+export interface PaginationRequest {
+	pageNo?: number
+	pageSize?: number
+	orders?: Record<string, 'ASC' | 'DESC'>
+}
+export interface PaginationResponse<T> {
+	page: number
+	items: T[]
+	totalItems: number
+	totalPages: number
 }

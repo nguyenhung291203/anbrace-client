@@ -29,7 +29,7 @@ const ListCategory: FC<ListCategoryProps> = ({ categories, onDetail, onEdit, onD
 
 			<Table.Tbody>
 				{categories.length === 0 && (
-					<Table.Tr>
+					<Table.Tr mt="sm">
 						<Table.Td colSpan={4}>
 							<Text c="dimmed" ta="center">
 								Không có danh mục nào

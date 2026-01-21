@@ -1,15 +1,8 @@
-import get from 'lodash/get'
-import isNil from 'lodash/isNil'
+import { get } from 'lodash'
 
-const apiBaseUrl = get(import.meta, 'env.VITE_API_BASE_URL')
-
-if (isNil(apiBaseUrl) || apiBaseUrl === '') {
-	throw new Error('Missing env: VITE_API_BASE_URL')
-}
-
-export const env = {
-	BASE_URL: apiBaseUrl,
-	TIMEOUT: 10000,
+const env = {
+	BASE_URL: get(import.meta, 'env.VITE_BASE_URL', 'http://localhost:3000/api/v1'),
+	TIMEOUT: get(import.meta, 'env.VITE_TIMEOUT', 60000),
 } as const
 
 export default env

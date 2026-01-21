@@ -57,7 +57,7 @@ const CategoryCard: FC<CategoryCardProps> = ({ category, onClick }) => {
 
 				<Group justify="space-between" mt="sm">
 					<Badge variant="light" color="pink">
-						{category.quantity} sản phẩm
+						{category?.productcQuantity || 0} sản phẩm
 					</Badge>
 				</Group>
 			</Stack>

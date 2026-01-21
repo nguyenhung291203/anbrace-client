@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import ProductForm from '../components/ProductForm'
 import { ProductEdit } from '../product.types'
 
-import { CATEGORY_MOCK } from '@/features/category/mock'
 import ContentPage from '@/shared/components/ContentPage'
 import TitlePage from '@/shared/components/TitlePage'
 
@@ -43,7 +42,7 @@ const CreateProductPage = () => {
 
 			<ContentPage>
 				<form onSubmit={form.onSubmit(handleSubmit)}>
-					<ProductForm form={form} categories={CATEGORY_MOCK} />
+					<ProductForm form={form} categories={[]} />
 
 					<Group justify="flex-end" mt="md">
 						<Button type="submit" leftSection={<IconDeviceFloppy size={16} />}>

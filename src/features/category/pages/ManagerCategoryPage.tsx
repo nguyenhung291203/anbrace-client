@@ -4,24 +4,30 @@ import { useDisclosure } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
 import { FC, useState } from 'react'
 
+import { ListCategoryRequest, useGetListCategory } from '../category.api'
 import { CategoryEdit, CategoryItem } from '../category.types'
 import CategoryCreateModal from '../components/CategoryCreateModal'
 import CategoryDetailModal from '../components/CategoryDetailModal'
 import CategoryFilter from '../components/CategoryFilter'
 import CategoryUpdateModal from '../components/CategoryUpdateModal'
 import ListCategory from '../components/ListCategory'
-import { CATEGORY_MOCK } from '../mock'
 
 import ConfirmModal from '@/shared/components/ConfirmModal'
 import ContentPage from '@/shared/components/ContentPage'
+import DataWrapper from '@/shared/components/DataWrapper'
 import TitlePage from '@/shared/components/TitlePage'
-import { Mode } from '@/shared/types'
+import { API_CODE, Mode } from '@/shared/types'
 
 const ManagerCategoryPage: FC = () => {
 	const theme = useMantineTheme()
+
 	const [mode, setMode] = useState<Mode>(null)
 	const [confirmOpened, { open, close }] = useDisclosure(false)
-
+	const [pagination, setPagination] = useState<ListCategoryRequest>({ pageSize: 5, pageNo: 1 })
+	const { data, isLoading } = useGetListCategory(pagination)
+	const success = data?.code === API_CODE.SUCCESS
+	const categories = data?.result?.items || []
+	const totalPages = data?.result?.totalPages || 0
 	const form = useForm<CategoryEdit>({
 		initialValues: {
 			name: '',
@@ -32,6 +38,31 @@ const ManagerCategoryPage: FC = () => {
 		form.reset()
 		setMode(null)
 	}
+	const handleChangePage = (pageNo: number) => {
+		setPagination((prev) => ({
+			...prev,
+			pageNo,
+		}))
+	}
+
+	const handleFilterChange = (values: { keyword?: string; status?: string }) => {
+		setPagination((prev) => ({
+			...prev,
+			pageNo: 1,
+			keyword: values.keyword,
+			status: values.status as any,
+		}))
+	}
+
+	const handleResetFilter = () => {
+		setPagination((prev) => ({
+			...prev,
+			pageNo: 1,
+			keyword: '',
+			status: undefined,
+		}))
+	}
+
 	return (
 		<>
 			<Stack>
@@ -48,24 +79,35 @@ const ManagerCategoryPage: FC = () => {
 					</Button>
 				</Group>
 				<ContentPage>
-					<CategoryFilter />
-					<ListCategory
-						categories={CATEGORY_MOCK}
-						onDetail={(category: CategoryItem) => {
-							setMode('DETAIL')
-							form.setValues(category)
-						}}
-						onEdit={(category: CategoryItem) => {
-							setMode('UPDATE')
-							form.setValues(category)
-						}}
-						onDelete={(category: CategoryItem) => {
-							setMode('DELETE')
-							open()
-							form.setValues(category)
-						}}
+					<CategoryFilter
+						keyword={pagination.keyword}
+						onChange={handleFilterChange}
+						onReset={handleResetFilter}
 					/>
-					<Pagination total={10} ml="auto" />
+					<DataWrapper success={success} loading={isLoading}>
+						<ListCategory
+							categories={categories}
+							onDetail={(category: CategoryItem) => {
+								setMode('DETAIL')
+								form.setValues(category)
+							}}
+							onEdit={(category: CategoryItem) => {
+								setMode('UPDATE')
+								form.setValues(category)
+							}}
+							onDelete={(category: CategoryItem) => {
+								setMode('DELETE')
+								open()
+								form.setValues(category)
+							}}
+						/>
+						<Pagination
+							total={totalPages}
+							ml="auto"
+							value={pagination.pageNo}
+							onChange={handleChangePage}
+						/>
+					</DataWrapper>
 				</ContentPage>
 			</Stack>
 			<CategoryDetailModal
