@@ -103,12 +103,14 @@ const ManagerCategoryPage: FC = () => {
 			})
 
 			setMode(null)
+			close()
 			return
 		}
 
 		notifyError({
 			message: 'Có lỗi xảy ra, vui lòng thử lại',
 		})
+		close()
 	}
 
 	const handleUpdate = async () => {
@@ -131,10 +133,11 @@ const ManagerCategoryPage: FC = () => {
 			notifySuccess({
 				message: 'Cập nhật danh mục thành công',
 			})
-
+			close()
 			setMode(null)
 			return
 		}
+		close()
 		notifyError({
 			message: 'Có lỗi xảy ra, vui lòng thử lại',
 		})
@@ -149,10 +152,12 @@ const ManagerCategoryPage: FC = () => {
 			notifySuccess({
 				message: 'Xoá danh mục thành công',
 			})
-
+			close()
 			setMode(null)
 			return
 		}
+
+		close()
 		notifyError({
 			message: 'Có lỗi xảy ra, vui lòng thử lại',
 		})
