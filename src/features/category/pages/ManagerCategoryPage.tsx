@@ -4,7 +4,7 @@ import { useDisclosure, useDebouncedValue } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
 import { FC, useState } from 'react'
 
-import { ListCategoryRequest, useGetListCategory } from '../category.api'
+import { ListCategoryRequest, useCreateCategory, useGetListCategory } from '../category.api'
 import { CategoryEdit, CategoryItem } from '../category.types'
 import CategoryCreateModal from '../components/CategoryCreateModal'
 import CategoryDetailModal from '../components/CategoryDetailModal'
@@ -20,13 +20,12 @@ import { API_CODE, Mode } from '@/shared/types'
 
 const ManagerCategoryPage: FC = () => {
 	const theme = useMantineTheme()
-
 	const [mode, setMode] = useState<Mode>(null)
 	const [confirmOpened, { open, close }] = useDisclosure(false)
 	const [pagination, setPagination] = useState<ListCategoryRequest>({ pageSize: 5, pageNo: 1 })
 	const [debouncedPagination] = useDebouncedValue(pagination, 300)
-
 	const { data, isLoading } = useGetListCategory(debouncedPagination)
+	const { mutateAsync: createCategory } = useCreateCategory()
 	const success = data?.code === API_CODE.SUCCESS
 	const categories = data?.result?.items || []
 	const totalPages = data?.result?.totalPages || 0
@@ -63,6 +62,30 @@ const ManagerCategoryPage: FC = () => {
 			keyword: '',
 			status: undefined,
 		}))
+	}
+
+	const handleCreate = async () => {
+		const req = form.values
+		const res = await createCategory(req)
+		console.log('Create category response:', res)
+		const code = res?.code
+		if (code === API_CODE.INVALID) {
+			const errors = res?.errors || {}
+			form.setErrors(errors)
+			close()
+			return
+		}
+		if (code === API_CODE.SUCCESS) {
+			setMode(null)
+			return
+		}
+	}
+
+	const handleConfirm = () => {
+		if (mode === 'CREATE') {
+			handleCreate()
+			return
+		}
 	}
 
 	return (
@@ -136,7 +159,7 @@ const ManagerCategoryPage: FC = () => {
 					open()
 				}}
 			/>
-			<ConfirmModal opened={confirmOpened} mode={mode} onClose={close} onConfirm={() => {}} />
+			<ConfirmModal opened={confirmOpened} mode={mode} onClose={close} onConfirm={handleConfirm} />
 		</>
 	)
 }

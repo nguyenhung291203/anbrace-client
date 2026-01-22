@@ -37,3 +37,12 @@ export const useGetMe = (enabled = true) => {
 		enabled,
 	})
 }
+
+export const useLogout = () =>
+	useMutation<ApiResponse<null>, Error, void>({
+		mutationFn: () =>
+			api({
+				url: '/auth/logout',
+				method: 'POST',
+			}),
+	})

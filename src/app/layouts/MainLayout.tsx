@@ -11,6 +11,7 @@ import MenuNavbar from './MenuNavbar'
 import { useGetMe } from '@/features/auth/auth.api'
 import { useAuthStore } from '@/features/auth/auth.store'
 import { useLayoutStore } from '@/shared/stores/main-layout.store'
+import { API_CODE } from '@/shared/types'
 import { getAccessToken } from '@/shared/utils/token.util'
 
 const MainLayout = () => {
@@ -21,12 +22,14 @@ const MainLayout = () => {
 	const isSmall = useMediaQuery('(max-width: 992px)')
 	const isMobile = useMediaQuery('(max-width: 767px)')
 	const { data } = useGetMe(!!accessToken)
-
+	const account = data?.result || null
+	const success = data?.code === API_CODE.SUCCESS && data?.result
 	useEffect(() => {
-		if (data?.result) {
-			setUser(data.result)
+		if (success) {
+			setUser(account)
+			return
 		}
-	}, [data, setUser])
+	}, [success])
 	useEffect(() => {
 		if (isSmall) {
 			closeNavbar()

@@ -18,18 +18,21 @@ const MenuNavbar: FC = () => {
 	const theme = useMantineTheme()
 
 	const navigate = useNavigate()
-	const { user } = useAuthStore()
+	const { role, isLoading } = useAuthStore()
 
 	const { opened, toggleNavbar } = useLayoutStore()
 
 	const menuList = useMemo(() => {
-		const menu = user ? MENU_BY_ROLE[user.role] : PUBLIC_MENU
+		if (isLoading) {
+			return []
+		}
+		const menu = role ? MENU_BY_ROLE[role] : PUBLIC_MENU
 
 		return menu.map((item) => ({
 			...item,
 			icon: item.icon ? <span style={{ fontSize: theme.fontSizes.xl }}>{item.icon}</span> : null,
 		}))
-	}, [user, theme.fontSizes])
+	}, [role, isLoading, theme.fontSizes])
 
 	const renderMenu = (menu: MenuItem[]) =>
 		menu.map((item) => {

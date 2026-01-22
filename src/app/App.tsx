@@ -11,7 +11,7 @@ import theme from './theme'
 
 import './index.css'
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			retry: 1,

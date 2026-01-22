@@ -10,7 +10,7 @@ interface AuthState {
 	isLoading: boolean
 	role: Role | null
 
-	setUser: (user: AccountItem) => void
+	setUser: (user: AccountItem | null) => void
 	logout: () => void
 	setLoading: (loading: boolean) => void
 	setIsAuthenticated: (isAuthenticated: boolean) => void
@@ -25,8 +25,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 	setUser: (user) =>
 		set({
 			user,
-			role: user.role,
-			isAuthenticated: true,
+			role: user?.role || null,
+			isAuthenticated: !!user,
 		}),
 
 	logout: () =>

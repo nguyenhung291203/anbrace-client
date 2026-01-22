@@ -18,7 +18,7 @@ export enum API_CODE {
 }
 
 export interface ApiResponse<T> {
-	code: string
+	code: API_CODE
 	message: string
 	result: T
 	errors?: Record<string, string>

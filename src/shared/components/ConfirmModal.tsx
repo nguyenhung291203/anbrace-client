@@ -16,26 +16,22 @@ const CONFIG: Record<
 		title: string
 		message: string
 		confirmText: string
-		color: string
 	}
 > = {
 	CREATE: {
 		title: 'Xác nhận tạo mới',
 		message: 'Bạn có chắc chắn muốn tạo không?',
 		confirmText: 'Tạo',
-		color: 'green',
 	},
 	UPDATE: {
 		title: 'Xác nhận cập nhật',
 		message: 'Bạn có chắc chắn muốn cập nhật không?',
 		confirmText: 'Cập nhật',
-		color: 'blue',
 	},
 	DELETE: {
 		title: 'Xác nhận xoá',
 		message: 'Hành động này không thể hoàn tác. Bạn có chắc chắn muốn xoá?',
 		confirmText: 'Xoá',
-		color: 'red',
 	},
 }
 
@@ -44,10 +40,10 @@ const ConfirmModal: FC<ConfirmModalProps> = ({ mode, onConfirm, ...modalProps })
 		return null
 	}
 
-	const { title, message, confirmText, color } = CONFIG[mode]
+	const { title, message, confirmText } = CONFIG[mode]
 
 	return (
-		<Modal {...modalProps} title={title} centered>
+		<Modal {...modalProps} title={title} centered withCloseButton={false}>
 			<Stack>
 				<Text size="sm">{message}</Text>
 
@@ -56,9 +52,7 @@ const ConfirmModal: FC<ConfirmModalProps> = ({ mode, onConfirm, ...modalProps })
 						Huỷ
 					</Button>
 
-					<Button color={color} onClick={onConfirm}>
-						{confirmText}
-					</Button>
+					<Button onClick={onConfirm}>{confirmText}</Button>
 				</Group>
 			</Stack>
 		</Modal>
