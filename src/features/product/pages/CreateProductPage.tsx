@@ -17,16 +17,13 @@ const CreateProductPage = () => {
 			name: '',
 			description: '',
 			categoryId: null,
-			price: 0,
-			stock: 0,
 			images: [],
 			thumbnail: '',
+			sizes: [],
 		},
 
 		validate: {
 			name: (value) => (!value ? 'Tên sản phẩm không được để trống' : null),
-			price: (value) => (value <= 0 ? 'Giá phải lớn hơn 0' : null),
-			stock: (value) => (value < 0 ? 'Tồn kho không hợp lệ' : null),
 		},
 	})
 
@@ -42,7 +39,7 @@ const CreateProductPage = () => {
 
 			<ContentPage>
 				<form onSubmit={form.onSubmit(handleSubmit)}>
-					<ProductForm form={form} categories={[]} />
+					<ProductForm form={form} readonly={false} />
 
 					<Group justify="flex-end" mt="md">
 						<Button type="submit" leftSection={<IconDeviceFloppy size={16} />}>

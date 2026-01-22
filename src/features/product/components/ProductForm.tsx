@@ -4,13 +4,14 @@ import {
 	Image,
 	NumberInput,
 	Paper,
-	Select,
 	Stack,
 	Text,
 	TextInput,
 	Textarea,
 	Group,
 	Badge,
+	Button,
+	ActionIcon,
 } from '@mantine/core'
 import { Dropzone } from '@mantine/dropzone'
 import { UseFormReturnType } from '@mantine/form'
@@ -19,58 +20,96 @@ import { FC } from 'react'
 
 import { ProductEdit } from '../product.types'
 
-import { CategoryItem } from '@/features/category/category.types'
+import CategorySelect from '@/features/category/components/CategorySelect'
 interface ProductFormProps {
 	form: UseFormReturnType<ProductEdit>
-	categories: CategoryItem[]
 	readonly?: boolean
 }
-const ProductForm: FC<ProductFormProps> = ({ form, categories, readonly = true }) => {
+const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 	return (
 		<Stack gap="md" p="md">
-			<TextInput label="Tên sản phẩm" readOnly={readonly} {...form.getInputProps('name')} />
+			<TextInput
+				label="Tên sản phẩm"
+				placeholder="Nhập tên sản phẩm (ví dụ: Vòng tay đá thạch anh)"
+				readOnly={readonly}
+				{...form.getInputProps('name')}
+			/>
 
 			<Textarea
 				label="Mô tả"
+				placeholder="Mô tả chi tiết sản phẩm, chất liệu, ý nghĩa phong thuỷ..."
 				minRows={3}
 				autosize
 				readOnly={readonly}
 				{...form.getInputProps('description')}
 			/>
 
-			<Select
-				label="Danh mục"
-				readOnly={readonly}
-				data={categories.map((item) => ({
-					value: String(item.id),
-					label: item.name,
-				}))}
-				{...form.getInputProps('category.id')}
-			/>
+			<CategorySelect />
 
-			<Grid>
-				<Grid.Col span={4}>
-					<NumberInput
-						label="Giá"
-						thousandSeparator=","
-						readOnly={readonly}
-						{...form.getInputProps('price')}
-					/>
-				</Grid.Col>
-				<Grid.Col span={4}>
-					<NumberInput label="Tồn kho" readOnly={readonly} {...form.getInputProps('stock')} />
-				</Grid.Col>
-				<Grid.Col span={4}>
-					<NumberInput
-						label="Đánh giá"
-						min={0}
-						max={5}
-						step={0.1}
-						readOnly={readonly}
-						{...form.getInputProps('rating')}
-					/>
-				</Grid.Col>
-			</Grid>
+			<Stack gap="xs">
+				<Text fw={500}>Size & Giá</Text>
+
+				{form.values.sizes?.map((_, index) => (
+					<Grid key={index}>
+						<Grid.Col span={3}>
+							<NumberInput
+								label="Size"
+								readOnly={readonly}
+								min={1}
+								rightSection={undefined}
+								{...form.getInputProps(`sizes.${index}.size`)}
+							/>
+						</Grid.Col>
+
+						<Grid.Col span={4}>
+							<NumberInput
+								label="Giá"
+								thousandSeparator=","
+								rightSection={<Text c="dimmed">₫</Text>}
+								readOnly={readonly}
+								min={0}
+								{...form.getInputProps(`sizes.${index}.price`)}
+							/>
+						</Grid.Col>
+
+						<Grid.Col span={3}>
+							<NumberInput
+								label="Tồn kho"
+								readOnly={readonly}
+								min={0}
+								{...form.getInputProps(`sizes.${index}.stock`)}
+							/>
+						</Grid.Col>
+
+						{!readonly && (
+							<Grid.Col span={2} style={{ display: 'flex', alignItems: 'end' }}>
+								<Button
+									color="red"
+									variant="filled"
+									onClick={() => form.removeListItem('sizes', index)}
+								>
+									Xoá
+								</Button>
+							</Grid.Col>
+						)}
+					</Grid>
+				))}
+
+				{!readonly && (
+					<Button
+						variant="light"
+						onClick={() =>
+							form.insertListItem('sizes', {
+								size: 8,
+								price: 0,
+								stock: 0,
+							})
+						}
+					>
+						+ Thêm size
+					</Button>
+				)}
+			</Stack>
 
 			<Stack gap="md" mt="lg">
 				<Group justify="space-between" align="center">

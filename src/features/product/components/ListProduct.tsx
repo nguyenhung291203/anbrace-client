@@ -22,7 +22,7 @@ const ListProduct: FC<ListProductProps> = ({ products, onDetail, onEdit, onDelet
 					<Table.Th w={80}>Ảnh</Table.Th>
 					<Table.Th w={220}>Tên sản phẩm</Table.Th>
 					<Table.Th>Danh mục</Table.Th>
-					<Table.Th ta="right" w={120}>
+					<Table.Th ta="center" w={120}>
 						Giá
 					</Table.Th>
 					<Table.Th ta="center" w={100}>
@@ -71,15 +71,28 @@ const ListProduct: FC<ListProductProps> = ({ products, onDetail, onEdit, onDelet
 							<Text size="sm">{item.category.name}</Text>
 						</Table.Td>
 
-						<Table.Td ta="right">
+						<Table.Td ta="center" miw={200}>
 							<Text size="sm" fw={500}>
-								{item.price.toLocaleString()} ₫
+								{item.sizes.length > 0
+									? (() => {
+											const prices = item.sizes.map((s) => s.price)
+											const min = Math.min(...prices)
+											const max = Math.max(...prices)
+
+											return min === max
+												? min.toLocaleString('vi-VN')
+												: `${min.toLocaleString('vi-VN')} ₫ - ${max.toLocaleString('vi-VN')} ₫`
+										})()
+									: '0'}{' '}
 							</Text>
 						</Table.Td>
 
 						<Table.Td ta="center">
-							<Text size="sm" c={item.stock > 0 ? 'green' : 'red'}>
-								{item.stock}
+							<Text
+								size="sm"
+								c={item.sizes.reduce((sum, s) => sum + s.stock, 0) > 0 ? 'green' : 'red'}
+							>
+								{item.sizes.reduce((sum, s) => sum + s.stock, 0)}
 							</Text>
 						</Table.Td>
 

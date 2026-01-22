@@ -16,7 +16,7 @@ export interface ProductItem {
 	thumbnail: string
 }
 
-export type ProductEdit = Omit<ProductItem, 'category' | 'rating' | 'id'> & {
+export type ProductEdit = Partial<Omit<ProductItem, 'category' | 'rating' | 'id'>> & {
 	categoryId: number | null
 }
 
