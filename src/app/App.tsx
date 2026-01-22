@@ -25,7 +25,7 @@ export default function App() {
 		<QueryClientProvider client={queryClient}>
 			<MantineProvider theme={theme}>
 				<RouterProvider router={router} />
-				<Notifications />
+				<Notifications position="top-right" />
 			</MantineProvider>
 		</QueryClientProvider>
 	)

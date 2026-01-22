@@ -4,7 +4,15 @@ import { useDisclosure, useDebouncedValue } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
 import { FC, useState } from 'react'
 
-import { ListCategoryRequest, useCreateCategory, useGetListCategory } from '../category.api'
+import {
+	CreateCategoryRequest,
+	ListCategoryRequest,
+	UpdateCategoryRequest,
+	useCreateCategory,
+	useDeleteCategory,
+	useGetListCategory,
+	useUpdateCategory,
+} from '../category.api'
 import { CategoryEdit, CategoryItem } from '../category.types'
 import CategoryCreateModal from '../components/CategoryCreateModal'
 import CategoryDetailModal from '../components/CategoryDetailModal'
@@ -17,15 +25,22 @@ import ContentPage from '@/shared/components/ContentPage'
 import DataWrapper from '@/shared/components/DataWrapper'
 import TitlePage from '@/shared/components/TitlePage'
 import { API_CODE, Mode } from '@/shared/types'
+import { notifyError, notifySuccess, notifyWarning } from '@/shared/utils/notification.util'
 
 const ManagerCategoryPage: FC = () => {
 	const theme = useMantineTheme()
 	const [mode, setMode] = useState<Mode>(null)
 	const [confirmOpened, { open, close }] = useDisclosure(false)
-	const [pagination, setPagination] = useState<ListCategoryRequest>({ pageSize: 5, pageNo: 1 })
+	const [pagination, setPagination] = useState<ListCategoryRequest>({
+		pageSize: 10,
+		pageNo: 1,
+		keyword: '',
+	})
 	const [debouncedPagination] = useDebouncedValue(pagination, 300)
 	const { data, isLoading } = useGetListCategory(debouncedPagination)
 	const { mutateAsync: createCategory } = useCreateCategory()
+	const { mutateAsync: updateCategory } = useUpdateCategory()
+	const { mutateAsync: deleteCategory } = useDeleteCategory()
 	const success = data?.code === API_CODE.SUCCESS
 	const categories = data?.result?.items || []
 	const totalPages = data?.result?.totalPages || 0
@@ -65,25 +80,95 @@ const ManagerCategoryPage: FC = () => {
 	}
 
 	const handleCreate = async () => {
-		const req = form.values
+		const req = form.values as CreateCategoryRequest
 		const res = await createCategory(req)
-		console.log('Create category response:', res)
+
+		const code = res?.code
+
+		if (code === API_CODE.INVALID) {
+			const errors = res?.errors || {}
+			form.setErrors(errors)
+
+			notifyWarning({
+				message: 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại',
+			})
+
+			close()
+			return
+		}
+
+		if (code === API_CODE.SUCCESS) {
+			notifySuccess({
+				message: 'Tạo danh mục thành công',
+			})
+
+			setMode(null)
+			return
+		}
+
+		notifyError({
+			message: 'Có lỗi xảy ra, vui lòng thử lại',
+		})
+	}
+
+	const handleUpdate = async () => {
+		const req = form.values as UpdateCategoryRequest
+		console.log('Update req', req)
+		const res = await updateCategory(req)
 		const code = res?.code
 		if (code === API_CODE.INVALID) {
 			const errors = res?.errors || {}
 			form.setErrors(errors)
+
+			notifyWarning({
+				message: 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại',
+			})
+
 			close()
 			return
 		}
 		if (code === API_CODE.SUCCESS) {
+			notifySuccess({
+				message: 'Cập nhật danh mục thành công',
+			})
+
 			setMode(null)
 			return
 		}
+		notifyError({
+			message: 'Có lỗi xảy ra, vui lòng thử lại',
+		})
+	}
+
+	const handleDelete = async () => {
+		const req = form.values.id as number
+		console.log('Delete req', req)
+		const res = await deleteCategory(req)
+		const code = res?.code
+		if (code === API_CODE.SUCCESS) {
+			notifySuccess({
+				message: 'Xoá danh mục thành công',
+			})
+
+			setMode(null)
+			return
+		}
+		notifyError({
+			message: 'Có lỗi xảy ra, vui lòng thử lại',
+		})
 	}
 
 	const handleConfirm = () => {
 		if (mode === 'CREATE') {
 			handleCreate()
+			return
+		}
+		if (mode === 'UPDATE') {
+			handleUpdate()
+			return
+		}
+		if (mode === 'DELETE') {
+			handleDelete()
 			return
 		}
 	}

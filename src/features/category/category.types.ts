@@ -11,6 +11,4 @@ export interface CategoryItem {
 	productcQuantity?: number
 }
 
-export type CategoryEdit = Omit<CategoryItem, 'id' | 'quantity'> & {
-	quantity?: number
-}
+export type CategoryEdit = Partial<Omit<CategoryItem, 'productcQuantity'>>
