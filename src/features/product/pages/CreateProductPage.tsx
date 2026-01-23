@@ -18,7 +18,6 @@ const CreateProductPage = () => {
 			description: '',
 			categoryId: null,
 			images: [],
-			thumbnail: '',
 			sizes: [],
 		},
 

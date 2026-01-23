@@ -18,6 +18,8 @@ export interface ProductItem {
 
 export type ProductEdit = Partial<Omit<ProductItem, 'category' | 'rating' | 'id'>> & {
 	categoryId: number | null
+	images?: File[]
+	thumbnail?: File
 }
 
 export enum PRODUCT_CARD_VARIANT {

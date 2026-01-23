@@ -11,7 +11,6 @@ import {
 	Group,
 	Badge,
 	Button,
-	ActionIcon,
 } from '@mantine/core'
 import { Dropzone } from '@mantine/dropzone'
 import { UseFormReturnType } from '@mantine/form'
@@ -21,13 +20,14 @@ import { FC } from 'react'
 import { ProductEdit } from '../product.types'
 
 import CategorySelect from '@/features/category/components/CategorySelect'
+import { getPreviewUrl } from '@/shared/utils/image.util'
 interface ProductFormProps {
 	form: UseFormReturnType<ProductEdit>
 	readonly?: boolean
 }
 const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 	return (
-		<Stack gap="md" p="md">
+		<Stack gap="md">
 			<TextInput
 				label="Tên sản phẩm"
 				placeholder="Nhập tên sản phẩm (ví dụ: Vòng tay đá thạch anh)"
@@ -97,7 +97,7 @@ const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 
 				{!readonly && (
 					<Button
-						variant="light"
+						variant=""
 						onClick={() =>
 							form.insertListItem('sizes', {
 								size: 8,
@@ -146,7 +146,7 @@ const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 								<AspectRatio ratio={1 / 1}>
 									{form.values.thumbnail ? (
 										<Image
-											src={form.values.thumbnail}
+											src={getPreviewUrl(form.values.thumbnail)}
 											fit="contain"
 											style={{
 												transition: 'transform 0.2s ease',
@@ -160,8 +160,14 @@ const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 										/>
 									) : (
 										<Dropzone
-											onDrop={() => {}}
+											accept={['image/png', 'image/jpeg', 'image/webp']}
+											maxFiles={1}
 											disabled={readonly}
+											onDrop={(files) => {
+												if (files.length > 0) {
+													form.setFieldValue('thumbnail', files[0])
+												}
+											}}
 											styles={{
 												root: {
 													display: 'flex',
@@ -227,7 +233,7 @@ const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 												<AspectRatio ratio={1}>
 													{image ? (
 														<Image
-															src={image}
+															src={getPreviewUrl(image)}
 															fit="contain"
 															style={{
 																transition: 'transform 0.2s ease',
@@ -235,8 +241,17 @@ const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 														/>
 													) : (
 														<Dropzone
-															onDrop={() => {}}
+															accept={['image/png', 'image/jpeg', 'image/webp']}
 															disabled={readonly}
+															maxFiles={1}
+															onDrop={(files) => {
+																if (!files.length) return
+
+																const newImages = [...(form.values.images || [])]
+																newImages[index] = files[0]
+
+																form.setFieldValue('images', newImages)
+															}}
 															styles={{
 																root: {
 																	border: '2px dashed #dee2e6',
