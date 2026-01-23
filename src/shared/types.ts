@@ -10,6 +10,7 @@ export interface BaseQueryArgs {
 	data?: AxiosRequestConfig['data']
 	params?: AxiosRequestConfig['params']
 	headers?: AxiosRequestConfig['headers']
+	isFormData?: boolean
 }
 
 export enum API_CODE {

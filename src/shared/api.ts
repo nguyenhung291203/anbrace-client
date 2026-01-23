@@ -62,20 +62,66 @@ axiosInstance.interceptors.response.use(
 	},
 )
 
+export const buildFormData = (data: Record<string, any>) => {
+	const formData = new FormData()
+
+	Object.entries(data ?? {}).forEach(([key, value]) => {
+		if (value === undefined || value === null) return
+
+		// 1️⃣ File đơn
+		if (value instanceof File) {
+			formData.append(key, value)
+			return
+		}
+
+		// 2️⃣ Nhiều file (images)
+		if (Array.isArray(value) && value.length && value[0] instanceof File) {
+			value.forEach((file) => {
+				formData.append(key, file)
+			})
+			return
+		}
+
+		// 3️⃣ Array object (sizes) → JSON STRING
+		if (Array.isArray(value) && typeof value[0] === 'object') {
+			formData.append(key, JSON.stringify(value))
+			return
+		}
+
+		// 4️⃣ Array primitive
+		if (Array.isArray(value)) {
+			formData.append(key, JSON.stringify(value))
+			return
+		}
+
+		// 5️⃣ Primitive
+		formData.append(key, String(value))
+	})
+
+	return formData
+}
+
 const api = async <T>({
 	url,
 	method,
 	data,
 	params,
 	headers,
+	isFormData = false,
 }: BaseQueryArgs): Promise<ApiResponse<T>> => {
+	const finalData = isFormData && data && !(data instanceof FormData) ? buildFormData(data) : data
+
 	const response = await axiosInstance({
 		url,
 		method,
-		data,
 		params,
-		headers,
+		data: finalData,
+		headers: {
+			...(isFormData ? { 'Content-Type': 'multipart/form-data' } : {}),
+			...headers,
+		},
 	})
+
 	return response.data as ApiResponse<T>
 }
 

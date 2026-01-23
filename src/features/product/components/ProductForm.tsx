@@ -44,7 +44,10 @@ const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 				{...form.getInputProps('description')}
 			/>
 
-			<CategorySelect />
+			<CategorySelect
+				value={form.values.categoryId?.toString() ?? null}
+				onChange={(value) => form.setFieldValue('categoryId', value ? Number(value) : null)}
+			/>
 
 			<Stack gap="xs">
 				<Text fw={500}>Size & Giá</Text>
@@ -55,7 +58,7 @@ const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 							<NumberInput
 								label="Size"
 								readOnly={readonly}
-								min={1}
+								min={14}
 								rightSection={undefined}
 								{...form.getInputProps(`sizes.${index}.size`)}
 							/>
@@ -100,7 +103,7 @@ const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 						variant="outline"
 						onClick={() =>
 							form.insertListItem('sizes', {
-								size: 8,
+								size: 14,
 								price: 0,
 								stock: 0,
 							})
