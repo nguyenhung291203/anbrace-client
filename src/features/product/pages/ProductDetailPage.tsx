@@ -24,13 +24,12 @@ import {
 	IconTruckDelivery,
 } from '@tabler/icons-react'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import ProductCard from '../components/ProductCard'
-import { MOCK_PRODUCTS } from '../mock'
+import RelatedProducts from '../components/RelatedProducts'
 import { useGetProductById } from '../product.api'
-import { PRODUCT_CARD_VARIANT, ProductSizePrice } from '../product.types'
+import { ProductSizePrice } from '../product.types'
 
 import { useAuthStore } from '@/features/auth/auth.store'
 import ContentPage from '@/shared/components/ContentPage'
@@ -53,10 +52,12 @@ const ProductDetailPage = () => {
 	const [activeImage, setActiveImage] = useState<string | null>(null)
 	const [selectedSize, setSelectedSize] = useState<ProductSizePrice | null>(null)
 
-	if (!isFetching && product && activeImage === null) {
-		setActiveImage(product.thumbnail)
-		setSelectedSize(product.sizes[0])
-	}
+	useEffect(() => {
+		if (!isFetching && product) {
+			setActiveImage(product.thumbnail)
+			setSelectedSize(product.sizes[0])
+		}
+	}, [isFetching, product])
 
 	if (isFetching) {
 		return <Text>Loading...</Text>
@@ -287,23 +288,7 @@ const ProductDetailPage = () => {
 				</Tabs>
 				<Space h={10} />
 				<Divider />
-				<Stack gap="sm">
-					<Title order={3} fw={600} fz="lg">
-						Sản phẩm liên quan
-					</Title>
-					<Grid gutter="md">
-						{MOCK_PRODUCTS.filter((p) => p.id !== product.id)
-							.slice(0, 6)
-							.map((relatedProduct) => (
-								<Grid.Col
-									key={relatedProduct.id}
-									span={{ base: 12, xs: 6, sm: 6, md: 4, lg: 3, xl: 2 }}
-								>
-									<ProductCard product={relatedProduct} variant={PRODUCT_CARD_VARIANT.V2} />
-								</Grid.Col>
-							))}
-					</Grid>
-				</Stack>
+				<RelatedProducts categoryId={product.category.id} productId={product.id} />
 			</ContentPage>
 		</Stack>
 	)

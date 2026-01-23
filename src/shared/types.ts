@@ -39,7 +39,7 @@ export class ApiError extends Error {
 export interface PaginationRequest {
 	pageNo?: number
 	pageSize?: number
-	orders?: Record<string, 'ASC' | 'DESC'>
+	orders?: Record<string, 'asc' | 'desc'>
 }
 export interface PaginationResponse<T> {
 	page: number

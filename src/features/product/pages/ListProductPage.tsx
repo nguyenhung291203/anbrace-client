@@ -1,9 +1,6 @@
 import {
-	Box,
-	Checkbox,
 	Grid,
 	Group,
-	Input,
 	Pagination,
 	RangeSlider,
 	Select,
@@ -11,46 +8,86 @@ import {
 	Stack,
 	Text,
 	Title,
-	UnstyledButton,
-	useMantineTheme,
 } from '@mantine/core'
-import { IconChevronDown, IconSearch } from '@tabler/icons-react'
+import { useDebouncedValue } from '@mantine/hooks'
+import { IconChevronDown } from '@tabler/icons-react'
 import { FC, useState } from 'react'
 
+import BraceletSizeFilter from '../components/BraceletSizeFilter'
 import FilterSectionHeader from '../components/FilterSectionHeader'
 import ProductCard from '../components/ProductCard'
-import { MOCK_PRODUCTS } from '../mock'
-import { BRACELET_SIZES } from '../product.constant'
+import { ListProductRequest, useGetListProduct } from '../product.api'
 
-import { useGetListCategory } from '@/features/category/category.api'
+import CategoryFacet from '@/features/category/components/CategoryFacet'
 import ContentPage from '@/shared/components/ContentPage'
+import DataWrapper from '@/shared/components/DataWrapper'
 import TitlePage from '@/shared/components/TitlePage'
 import { API_CODE } from '@/shared/types'
 
 const PRICE_MIN = 0
 const PRICE_MAX = 5_000_000
 const ListProductPage: FC = () => {
-	const theme = useMantineTheme()
-	const [priceRange, setPriceRange] = useState<[number, number]>([PRICE_MIN, PRICE_MAX])
-	const [selectedSizes, setSelectedSizes] = useState<string[]>([])
-
-	const toggleSize = (size: string) => {
-		setSelectedSizes((prev) =>
-			prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size],
-		)
-	}
-	const { data, isLoading } = useGetListCategory({
+	const [pagination, setPagination] = useState<ListProductRequest>({
 		pageNo: 1,
-		pageSize: 5,
+		pageSize: 10,
+		categoryIds: [],
+		minPrice: PRICE_MIN,
+		maxPrice: PRICE_MAX,
+		sizes: [],
+		orders: {},
 	})
+	const [debouncedPagination] = useDebouncedValue(pagination, 300)
+	const { data, isFetching } = useGetListProduct(debouncedPagination)
 	const success = data?.code === API_CODE.SUCCESS
-	const categories = data?.result.items ?? []
+	const totalPages = data?.result?.totalPages || 0
+	const products = data?.result?.items || []
+
+	const handleChangePage = (pageNo: number) => {
+		setPagination((prev) => ({
+			...prev,
+			pageNo,
+		}))
+	}
+
+	const handleSortChange = (value: string | null) => {
+		let orders: ListProductRequest['orders'] = {}
+
+		switch (value) {
+			case 'price_asc':
+				orders = { price: 'asc' }
+				break
+			case 'price_desc':
+				orders = { price: 'desc' }
+				break
+			case 'name_asc':
+				orders = { name: 'asc' }
+				break
+			case 'name_desc':
+				orders = { name: 'desc' }
+				break
+			case 'newest':
+				orders = { createdAt: 'desc' }
+				break
+			case 'best_seller':
+				orders = { sold: 'desc' }
+				break
+			default:
+				orders = {}
+		}
+
+		setPagination((prev) => ({
+			...prev,
+			pageNo: 1,
+			orders,
+		}))
+	}
+
 	return (
 		<Stack>
 			<TitlePage title="Danh sách sản phẩm" />
 			<ContentPage>
 				<Grid>
-					<Grid.Col span={2}>
+					<Grid.Col span={3}>
 						<Stack>
 							<Stack gap={0}>
 								<FilterSectionHeader title="Giá sản phẩm" />
@@ -59,72 +96,46 @@ const ListProductPage: FC = () => {
 										min={PRICE_MIN}
 										max={PRICE_MAX}
 										step={50_000}
-										value={priceRange}
-										onChange={setPriceRange}
+										value={[pagination.minPrice!, pagination.maxPrice!]}
+										onChange={([min, max]) =>
+											setPagination((prev) => ({
+												...prev,
+												pageNo: 1,
+												minPrice: min,
+												maxPrice: max,
+											}))
+										}
 									/>
 
 									<Group justify="space-between">
-										<Text size="sm">{priceRange[0].toLocaleString()} ₫</Text>
-										<Text size="sm">{priceRange[1].toLocaleString()} ₫</Text>
+										<Text size="sm">{pagination.minPrice!.toLocaleString()} ₫</Text>
+										<Text size="sm">{pagination.maxPrice!.toLocaleString()} ₫</Text>
 									</Group>
 								</Stack>
 							</Stack>
-							<Stack gap={0}>
-								<FilterSectionHeader title="Loại" />
-								<Stack py="sm" gap="xs">
-									<Input
-										rightSection={<IconSearch size={14} />}
-										radius="sm"
-										placeholder="Tìm kiếm theo danh mục"
-									/>
-									<Stack px="xs" gap="sm">
-										{categories.map((category) => (
-											<Checkbox key={category.id} label={category.name} />
-										))}
-									</Stack>
-								</Stack>
-							</Stack>
-							<Stack gap={0}>
-								<FilterSectionHeader title="Size vòng tay" />
-
-								<Box px="xs" py="sm">
-									<Group gap="xs">
-										{BRACELET_SIZES.map((size) => {
-											const active = selectedSizes.includes(size)
-
-											return (
-												<UnstyledButton
-													key={size}
-													onClick={() => toggleSize(size)}
-													style={{
-														width: 40,
-														height: 40,
-														borderRadius: '50%',
-														border: active
-															? `2px solid ${theme.colors[theme.primaryColor][6]}`
-															: `1px solid ${theme.colors.gray[4]}`,
-														background: active ? theme.colors[theme.primaryColor][0] : theme.white,
-														display: 'flex',
-														alignItems: 'center',
-														justifyContent: 'center',
-														fontWeight: 600,
-														fontSize: 14,
-														color: active
-															? theme.colors[theme.primaryColor][7]
-															: theme.colors.dark[6],
-														transition: 'all 0.2s ease',
-													}}
-												>
-													{size}
-												</UnstyledButton>
-											)
-										})}
-									</Group>
-								</Box>
-							</Stack>
+							<CategoryFacet
+								selectedCategoryIds={pagination.categoryIds}
+								onChange={(ids) =>
+									setPagination((prev) => ({
+										...prev,
+										pageNo: 1,
+										categoryIds: ids,
+									}))
+								}
+							/>
+							<BraceletSizeFilter
+								value={pagination.sizes}
+								onChange={(sizes) =>
+									setPagination((prev) => ({
+										...prev,
+										pageNo: 1,
+										sizes,
+									}))
+								}
+							/>
 						</Stack>
 					</Grid.Col>
-					<Grid.Col span={10}>
+					<Grid.Col span={9}>
 						<Stack>
 							<Group>
 								<Title order={3} fw={600} fz="lg">
@@ -145,17 +156,34 @@ const ListProductPage: FC = () => {
 										{ value: 'newest', label: 'Mới nhất' },
 										{ value: 'best_seller', label: 'Bán chạy nhất' },
 									]}
+									onChange={handleSortChange}
 									rightSection={<IconChevronDown size={14} />}
 								/>
 							</Group>
 
-							<SimpleGrid cols={{ base: 1, xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }} spacing="md">
-								{MOCK_PRODUCTS.slice(0, 8).map((product) => (
-									<ProductCard key={product.id} product={product} />
-								))}
-							</SimpleGrid>
+							<DataWrapper success={success} loading={isFetching}>
+								{products.length === 0 && (
+									<Text c="dimmed" ta="center" mt="md">
+										Không có sản phẩm nào
+									</Text>
+								)}
+								<SimpleGrid cols={{ base: 1, xs: 2, sm: 3, md: 4, lg: 4, xl: 6 }} spacing="md">
+									{products.map((product) => (
+										<ProductCard key={product.id} product={product} />
+									))}
+								</SimpleGrid>
+							</DataWrapper>
 
-							<Pagination size="lg" total={10} mx="auto" mt="lg" />
+							{totalPages > 1 && (
+								<Pagination
+									size="lg"
+									value={pagination.pageNo}
+									total={totalPages}
+									mx="auto"
+									mt="lg"
+									onChange={handleChangePage}
+								/>
+							)}
 						</Stack>
 					</Grid.Col>
 				</Grid>

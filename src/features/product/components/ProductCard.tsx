@@ -7,6 +7,7 @@ import { PRODUCT_CARD_VARIANT, ProductItem } from '../product.types'
 
 import { useAuthStore } from '@/features/auth/auth.store'
 import { PATH_ITEM, ROUTE_PATH } from '@/shared/constants/path.constant'
+import { getImageFromServer } from '@/shared/utils/image.util'
 
 interface ProductCardProps {
 	product: ProductItem
@@ -32,7 +33,13 @@ const ProductCard: FC<ProductCardProps> = ({ product, variant = PRODUCT_CARD_VAR
 				onClick={handleNavigateToDetail}
 			>
 				<Stack gap="xs" align="center">
-					<Image src={product.thumbnail} h={100} fit="contain" bg="gray.0" radius="sm" />
+					<Image
+						src={getImageFromServer(product.thumbnail)}
+						h={100}
+						fit="contain"
+						bg="gray.0"
+						radius="sm"
+					/>
 
 					<Text size="sm" fw={600} lineClamp={2} ta="center">
 						{product.name}
@@ -84,7 +91,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, variant = PRODUCT_CARD_VAR
 		>
 			<Card.Section pos="relative" style={{ overflow: 'hidden', backgroundColor: '#f8f9fa' }}>
 				<Image
-					src={product.thumbnail}
+					src={getImageFromServer(product.thumbnail)}
 					h={160}
 					fit="contain"
 					style={{

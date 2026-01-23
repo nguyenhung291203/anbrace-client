@@ -7,6 +7,10 @@ import { ApiResponse, PaginationRequest, PaginationResponse } from '@/shared/typ
 
 export interface ListProductRequest extends PaginationRequest {
 	keyword?: string
+	categoryIds: number[]
+	minPrice?: number
+	maxPrice?: number
+	sizes?: number[]
 }
 export type ListProductResponse = PaginationResponse<ProductItem>
 
