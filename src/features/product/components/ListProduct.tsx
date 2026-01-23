@@ -4,6 +4,8 @@ import { FC } from 'react'
 
 import type { ProductItem } from '../product.types'
 
+import { getImageFromServer } from '@/shared/utils/image.util'
+
 interface ListProductProps {
 	products: ProductItem[]
 	onDetail?: (item: ProductItem) => void
@@ -51,7 +53,7 @@ const ListProduct: FC<ListProductProps> = ({ products, onDetail, onEdit, onDelet
 
 						<Table.Td>
 							<Image
-								src={item.thumbnail}
+								src={getImageFromServer(item.thumbnail)}
 								w={48}
 								h={48}
 								radius="sm"

@@ -29,7 +29,6 @@ const CreateProductPage = () => {
 	const handleSubmit = (values: typeof form.values) => {
 		console.log('CREATE PRODUCT:', values)
 		// TODO: call API create product
-		navigate('/admin/products')
 	}
 
 	return (

@@ -3,15 +3,21 @@ import { IconPlus } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 
 import ListProduct from '../components/ListProduct'
-import { MOCK_PRODUCTS } from '../mock'
+import { useGetListProduct } from '../product.api'
 
 import ContentPage from '@/shared/components/ContentPage'
+import DataWrapper from '@/shared/components/DataWrapper'
 import TitlePage from '@/shared/components/TitlePage'
 import { PATH_ITEM, ROUTE_PATH } from '@/shared/constants/path.constant'
+import { API_CODE } from '@/shared/types'
 
 const ManagerProductPage = () => {
 	const theme = useMantineTheme()
 	const navigate = useNavigate()
+	const { data, isFetching } = useGetListProduct({ pageNo: 1, pageSize: 10 })
+	console.log('data', data)
+	const success = data?.code === API_CODE.SUCCESS
+	const products = data?.result.items || []
 	return (
 		<>
 			<Stack>
@@ -28,12 +34,15 @@ const ManagerProductPage = () => {
 					</Button>
 				</Group>
 				<ContentPage>
-					<ListProduct
-						products={MOCK_PRODUCTS}
-						onDetail={(p) => {
-							navigate(`${`/${PATH_ITEM.PRODUCT.ROOT}/${p.id}`}`)
-						}}
-					/>
+					<DataWrapper success={success} loading={isFetching}>
+						<ListProduct
+							products={products}
+							onDetail={(p) => {
+								navigate(`${`/${PATH_ITEM.PRODUCT.ROOT}/${p.id}`}`)
+							}}
+						/>
+					</DataWrapper>
+
 					<Pagination total={10} ml="auto" />
 				</ContentPage>
 			</Stack>

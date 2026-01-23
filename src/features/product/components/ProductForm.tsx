@@ -97,7 +97,7 @@ const ProductForm: FC<ProductFormProps> = ({ form, readonly = true }) => {
 
 				{!readonly && (
 					<Button
-						variant=""
+						variant="outline"
 						onClick={() =>
 							form.insertListItem('sizes', {
 								size: 8,

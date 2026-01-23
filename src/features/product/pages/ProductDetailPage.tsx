@@ -24,37 +24,47 @@ import {
 	IconTruckDelivery,
 } from '@tabler/icons-react'
 import clsx from 'clsx'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import ProductCard from '../components/ProductCard'
 import { MOCK_PRODUCTS } from '../mock'
-import { PRODUCT_CARD_VARIANT } from '../product.types'
+import { useGetProductById } from '../product.api'
+import { PRODUCT_CARD_VARIANT, ProductSizePrice } from '../product.types'
 
 import { useAuthStore } from '@/features/auth/auth.store'
-import { useGetListCategory } from '@/features/category/category.api'
 import ContentPage from '@/shared/components/ContentPage'
 import TitlePage from '@/shared/components/TitlePage'
 import { ROUTE_PATH } from '@/shared/constants/path.constant'
 import { API_CODE } from '@/shared/types'
+import { getImageFromServer } from '@/shared/utils/image.util'
 
 const ProductDetailPage = () => {
 	const { id } = useParams<{ id: string }>()
 	const navigate = useNavigate()
-	const product = useMemo(() => MOCK_PRODUCTS.find((p) => p.id.toString() === id), [id])
-	if (!product) {
+
+	const { data, isFetching } = useGetProductById(Number(id))
+	const { isAuthenticated } = useAuthStore()
+
+	const product = data?.result || null
+	const success = data?.code === API_CODE.SUCCESS
+
+	const [quantity, setQuantity] = useState(1)
+	const [activeImage, setActiveImage] = useState<string | null>(null)
+	const [selectedSize, setSelectedSize] = useState<ProductSizePrice | null>(null)
+
+	if (!isFetching && product && activeImage === null) {
+		setActiveImage(product.thumbnail)
+		setSelectedSize(product.sizes[0])
+	}
+
+	if (isFetching) {
+		return <Text>Loading...</Text>
+	}
+
+	if (!product || !success) {
 		return <Text>Không tìm thấy sản phẩm</Text>
 	}
-	const { isAuthenticated } = useAuthStore()
-	const [quantity, setQuantity] = useState(1)
-	const [activeImage, setActiveImage] = useState(product.thumbnail)
-	const [selectedSize, setSelectedSize] = useState(product.sizes[0])
-	const { data, isLoading } = useGetListCategory({
-		pageNo: 1,
-		pageSize: 12,
-	})
-	const success = data?.code === API_CODE.SUCCESS
-	const categories = data?.result.items ?? []
 	return (
 		<Stack>
 			<TitlePage title="Chi tiết sản phẩm" />
@@ -63,7 +73,7 @@ const ProductDetailPage = () => {
 				<Grid>
 					<Grid.Col span={5}>
 						<Stack gap="sm">
-							<Image src={activeImage} h={360} fit="contain" />
+							<Image src={getImageFromServer(activeImage)} h={360} fit="contain" />
 
 							<Group gap="sm">
 								{[product.thumbnail, ...product.images].slice(0, 8).map((img, index) => (
@@ -80,7 +90,7 @@ const ProductDetailPage = () => {
 										}}
 										onClick={() => setActiveImage(img)}
 									>
-										<Image src={img} h="100%" fit="contain" />
+										<Image src={getImageFromServer(img)} h="100%" fit="contain" />
 									</Paper>
 								))}
 							</Group>
@@ -100,8 +110,8 @@ const ProductDetailPage = () => {
 									</Text>
 
 									<Group gap="xs">
-										{product.sizes.map((item) => {
-											const isSelected = selectedSize.size === item.size
+										{product?.sizes.map((item) => {
+											const isSelected = selectedSize?.size === item.size
 											const isOutOfStock = item.stock === 0
 
 											return (
@@ -135,7 +145,7 @@ const ProductDetailPage = () => {
 											Giá
 										</Text>
 										<Text fw={700} size="xl">
-											{selectedSize.price.toLocaleString()} ₫
+											{selectedSize?.price.toLocaleString()} ₫
 										</Text>
 									</Stack>
 
@@ -247,12 +257,12 @@ const ProductDetailPage = () => {
 
 							<Group justify="space-between">
 								<Text fw={500}>Giá</Text>
-								<Text>{selectedSize.price.toLocaleString()} ₫</Text>
+								<Text>{selectedSize?.price.toLocaleString()} ₫</Text>
 							</Group>
 
 							<Group justify="space-between">
 								<Text fw={500}>Tồn kho</Text>
-								<Text>{selectedSize.stock}</Text>
+								<Text>{selectedSize?.stock}</Text>
 							</Group>
 
 							<Group justify="space-between">
