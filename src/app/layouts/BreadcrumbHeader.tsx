@@ -18,6 +18,8 @@ const BreadcrumbHeader: FC = () => {
 				return 'Quản lý sản phẩm'
 			case PATH_ITEM.ADMIN.CREATE_PRODUCT:
 				return 'Thêm mới sản phẩm'
+			case PATH_ITEM.ADMIN.UPDATE_PRODUCT:
+				return 'Cập nhật sản phẩm'
 			case PATH_ITEM.PRODUCT.ROOT:
 				return 'Sản phẩm'
 			case PATH_ITEM.PRODUCT.LIST_PRODUCT:

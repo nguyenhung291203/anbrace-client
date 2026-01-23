@@ -15,7 +15,6 @@ const ManagerProductPage = () => {
 	const theme = useMantineTheme()
 	const navigate = useNavigate()
 	const { data, isFetching } = useGetListProduct({ pageNo: 1, pageSize: 10 })
-	console.log('data', data)
 	const success = data?.code === API_CODE.SUCCESS
 	const products = data?.result.items || []
 	return (
@@ -39,6 +38,9 @@ const ManagerProductPage = () => {
 							products={products}
 							onDetail={(p) => {
 								navigate(`${`/${PATH_ITEM.PRODUCT.ROOT}/${p.id}`}`)
+							}}
+							onEdit={(p) => {
+								navigate(`${`/${PATH_ITEM.ADMIN.ROOT}//${PATH_ITEM.ADMIN.UPDATE_PRODUCT}/${p.id}`}`)
 							}}
 						/>
 					</DataWrapper>

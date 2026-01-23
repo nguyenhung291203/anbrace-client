@@ -1,7 +1,12 @@
 import { RouteObject } from 'react-router-dom'
 
-import { ListProductPage, ManagerProductPage, ProductDetailPage } from './pages'
-import CreateProductPage from './pages/CreateProductPage'
+import {
+	ListProductPage,
+	ManagerProductPage,
+	ProductDetailPage,
+	UpdateProductPage,
+	CreateProductPage,
+} from './pages'
 
 import ProtectedRoute from '@/app/routers/ProtectedRoute'
 import { PATH_ITEM, ROUTE_PATH } from '@/shared/constants/path.constant'
@@ -18,6 +23,10 @@ const productRouter: RouteObject = {
 				{
 					path: ROUTE_PATH.ADMIN.CREATE_PRODUCT,
 					element: <CreateProductPage />,
+				},
+				{
+					path: ROUTE_PATH.ADMIN.UPDATE_PRODUCT,
+					element: <UpdateProductPage />,
 				},
 			],
 		},

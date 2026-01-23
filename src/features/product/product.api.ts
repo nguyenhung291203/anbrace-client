@@ -8,7 +8,7 @@ import { API_CODE, ApiResponse, PaginationRequest, PaginationResponse } from '@/
 
 export interface ListProductRequest extends PaginationRequest {
 	keyword?: string
-	categoryIds: number[]
+	categoryIds?: number[]
 	minPrice?: number
 	maxPrice?: number
 	sizes?: number[]
